@@ -2,8 +2,8 @@
   "version": 2,
   "builds": [
     {
-      "src": "public/index.php",
-      "use": "@vercel/php"
+      "src": "public/**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -17,19 +17,16 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/public/index.php"
+      "dest": "/public/index.html"
     }
   ],
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
-    "APP_URL": "https://survey-monitor-site.vercel.app",
-    "APP_KEY": "base64:your-generated-key-here",
-    "LOG_CHANNEL": "stack",
-    "LOG_LEVEL": "error"
+    "APP_URL": "https://survey-monitor-site.vercel.app"
   },
-  "installCommand": "composer install --no-dev --optimize-autoloader --no-interaction && npm install && npm run build",
-  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "buildCommand": "echo 'Static site - no build needed'",
   "outputDirectory": "public",
   "framework": null,
   "regions": ["nrt1"],
