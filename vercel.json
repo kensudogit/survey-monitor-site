@@ -8,6 +8,14 @@
   ],
   "routes": [
     {
+      "src": "/favicon.ico",
+      "dest": "/public/favicon.ico"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/public/assets/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/index.php"
     }
@@ -15,14 +23,12 @@
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
-    "APP_URL": "https://survey-monitor-site.vercel.app"
+    "APP_URL": "https://survey-monitor-site.vercel.app",
+    "APP_KEY": "base64:your-generated-key-here",
+    "LOG_CHANNEL": "stack",
+    "LOG_LEVEL": "error"
   },
-  "functions": {
-    "app/Http/Controllers/**/*.php": {
-      "runtime": "@vercel/php"
-    }
-  },
-  "installCommand": "composer install --no-dev --optimize-autoloader --no-interaction",
+  "installCommand": "composer install --no-dev --optimize-autoloader --no-interaction && npm install && npm run build",
   "buildCommand": "npm run build",
   "outputDirectory": "public",
   "framework": null,
