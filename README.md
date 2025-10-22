@@ -1,4 +1,61 @@
-# Survey Monitor Site - Vercel Deployment
+# Survey Monitor Site
+
+## 📋 プロジェクト概要
+
+Survey Monitorは、React + Viteで構築されたモダンなアンケートプラットフォームです。ユーザーはアンケートに回答してポイントを獲得し、企業は貴重な市場調査データを収集できます。
+
+## 🎯 主要機能
+
+### 🔐 認証システム
+- **ユーザー登録・ログイン**: メールアドレスとパスワードによる認証
+- **デモユーザー**: テスト用のデモアカウントで簡単に体験可能
+- **セッション管理**: ローカルストレージを使用した永続的なログイン状態
+- **パスワードハッシュ化**: セキュアなパスワード管理
+
+### 📊 アンケート機能
+- **アンケート一覧**: カテゴリー別に整理されたアンケート表示
+- **インタラクティブ回答**: 単一選択・複数選択に対応した回答システム
+- **進捗表示**: リアルタイムの進捗バーと質問数表示
+- **完了画面**: アニメーション付きの完了通知
+
+### 🏆 ポイントシステム
+- **ポイント獲得**: アンケート完了時に自動でポイント付与
+- **ダッシュボード**: 獲得ポイントと完了アンケート数の表示
+- **統計情報**: ユーザーの活動履歴とパフォーマンス
+
+### 🎨 UI/UX機能
+- **レスポンシブデザイン**: モバイル・タブレット・デスクトップ対応
+- **モダンなデザイン**: Tailwind CSSによる美しいUI
+- **アニメーション**: ホバー効果とトランジション
+- **グラスモーフィズム**: モダンなガラス効果デザイン
+
+## 🛠 技術スタック
+
+### フロントエンド
+- **React 18**: 最新のReact機能とHooks
+- **Vite 4**: 高速な開発サーバーとビルドツール
+- **React Router DOM 6**: クライアントサイドルーティング
+- **Tailwind CSS 3**: ユーティリティファーストCSS
+- **Font Awesome 6**: アイコンライブラリ
+- **Inter Font**: モダンなタイポグラフィ
+
+### 状態管理
+- **React Context API**: グローバル状態管理
+- **LocalStorage**: データ永続化
+- **Custom Hooks**: 再利用可能なロジック
+
+### 開発・デプロイ
+- **Vite**: 高速ビルドとHMR
+- **PostCSS**: CSS処理
+- **Autoprefixer**: ベンダープレフィックス自動追加
+- **Vercel**: クラウドデプロイメント
+- **Git**: バージョン管理
+
+### パフォーマンス
+- **Code Splitting**: 自動的なコード分割
+- **Tree Shaking**: 未使用コードの除去
+- **Gzip圧縮**: アセットの最適化
+- **CDN配信**: 高速なアセット配信
 
 ## 🚀 デプロイ手順
 
@@ -42,13 +99,62 @@
 
 ```
 survey-monitor-site/
-├── public/
-│   ├── index.html          # メインの静的サイト
-│   └── favicon.ico         # ファビコン
+├── src/                    # ソースコード
+│   ├── components/         # Reactコンポーネント
+│   │   ├── Header.jsx      # ヘッダーコンポーネント
+│   │   └── Footer.jsx      # フッターコンポーネント
+│   ├── pages/              # ページコンポーネント
+│   │   ├── Home.jsx        # ホームページ
+│   │   ├── Login.jsx       # ログインページ
+│   │   ├── Register.jsx    # 新規登録ページ
+│   │   ├── Surveys.jsx     # アンケート一覧
+│   │   ├── Category.jsx     # カテゴリーページ
+│   │   ├── Dashboard.jsx   # ダッシュボード
+│   │   └── Survey.jsx      # アンケート回答ページ
+│   ├── contexts/           # React Context
+│   │   └── AuthContext.jsx # 認証状態管理
+│   ├── App.jsx             # メインアプリケーション
+│   ├── main.jsx            # エントリーポイント
+│   └── index.css           # グローバルスタイル
+├── public/                 # 静的ファイル
+│   └── PC.png             # ロゴ画像
+├── dist/                   # ビルド出力
+├── index.html              # HTMLテンプレート
+├── package.json            # 依存関係とスクリプト
+├── vite.config.js          # Vite設定
+├── tailwind.config.js      # Tailwind CSS設定
+├── postcss.config.js       # PostCSS設定
 ├── vercel.json             # Vercel設定
-├── package.json            # Node.js依存関係
-├── .gitignore             # Git除外ファイル
-└── README.md              # このファイル
+└── README.md               # このファイル
+```
+
+## 🛠 セットアップ手順
+
+### 1. リポジトリのクローン
+```bash
+git clone https://github.com/YOUR_USERNAME/survey-monitor-site.git
+cd survey-monitor-site
+```
+
+### 2. 依存関係のインストール
+```bash
+npm install
+```
+
+### 3. 開発サーバーの起動
+```bash
+npm run dev
+```
+開発サーバーが起動し、`http://localhost:3000`でアクセス可能
+
+### 4. プロダクションビルド
+```bash
+npm run build
+```
+
+### 5. プレビュー
+```bash
+npm run preview
 ```
 
 ## 🎯 機能
