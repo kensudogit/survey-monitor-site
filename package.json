@@ -1,12 +1,13 @@
 {
-    "name": "survey-monitor-site",
-    "private": true,
-    "scripts": {
-        "dev": "echo 'Static site - no dev server needed'",
-        "build": "echo 'Static site - no build needed'",
-        "watch": "echo 'Static site - no watch needed'"
-    },
-    "devDependencies": {},
-    "dependencies": {}
+  "name": "survey-monitor-site",
+  "version": "1.0.0",
+  "description": "Modern Survey Monitor Site",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site - no start needed'"
+  },
+  "keywords": ["survey", "monitor", "static"],
+  "author": "Survey Monitor Team",
+  "license": "MIT"
 }
-
