@@ -105,6 +105,130 @@ class SurveyManager {
                 ],
                 createdAt: new Date().toISOString(),
                 status: 'active'
+            },
+            {
+                id: '4',
+                title: 'ライフスタイルと健康習慣調査',
+                description: '日常生活の習慣と健康管理について調査します',
+                category: 'ライフスタイル',
+                points: 120,
+                estimatedTime: 8,
+                image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop',
+                questions: [
+                    {
+                        id: 'q1',
+                        type: 'single',
+                        question: '1日の睡眠時間はどのくらいですか？',
+                        options: ['6時間未満', '6-7時間', '7-8時間', '8時間以上']
+                    },
+                    {
+                        id: 'q2',
+                        type: 'multiple',
+                        question: '日常的に行っている健康習慣を選択してください（複数選択可）',
+                        options: ['運動', 'バランスの良い食事', '十分な睡眠', 'ストレス管理', 'その他']
+                    }
+                ],
+                createdAt: new Date().toISOString(),
+                status: 'active'
+            },
+            {
+                id: '5',
+                title: 'ゲームとエンターテイメント調査',
+                description: 'ゲームやエンターテイメントの利用状況について調査します',
+                category: 'エンターテイメント',
+                points: 80,
+                estimatedTime: 6,
+                image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=200&fit=crop',
+                questions: [
+                    {
+                        id: 'q1',
+                        type: 'single',
+                        question: 'ゲームをプレイする頻度はどのくらいですか？',
+                        options: ['毎日', '週に数回', '月に数回', 'ほとんどしない']
+                    },
+                    {
+                        id: 'q2',
+                        type: 'single',
+                        question: '好きなゲームジャンルはどれですか？',
+                        options: ['RPG', 'アクション', 'パズル', 'シミュレーション', 'その他']
+                    }
+                ],
+                createdAt: new Date().toISOString(),
+                status: 'active'
+            },
+            {
+                id: '6',
+                title: '健康管理アプリの利用調査',
+                description: '健康管理アプリやウェアラブルデバイスの利用状況を調査します',
+                category: 'ヘルスケア',
+                points: 90,
+                estimatedTime: 5,
+                image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=200&fit=crop',
+                questions: [
+                    {
+                        id: 'q1',
+                        type: 'single',
+                        question: '健康管理アプリを使用していますか？',
+                        options: ['使用している', '使用していない', '興味がある', '興味がない']
+                    },
+                    {
+                        id: 'q2',
+                        type: 'multiple',
+                        question: '健康管理で重視している項目を選択してください（複数選択可）',
+                        options: ['運動記録', '食事管理', '睡眠管理', '体重管理', 'その他']
+                    }
+                ],
+                createdAt: new Date().toISOString(),
+                status: 'active'
+            },
+            {
+                id: '7',
+                title: 'AIとテクノロジーの未来調査',
+                description: '人工知能や最新テクノロジーに対する意識を調査します',
+                category: 'テクノロジー',
+                points: 180,
+                estimatedTime: 12,
+                image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=200&fit=crop',
+                questions: [
+                    {
+                        id: 'q1',
+                        type: 'single',
+                        question: 'AI技術についてどの程度関心がありますか？',
+                        options: ['非常に高い', '高い', '普通', '低い', '全くない']
+                    },
+                    {
+                        id: 'q2',
+                        type: 'text',
+                        question: 'AI技術の活用で期待している分野があれば教えてください'
+                    }
+                ],
+                createdAt: new Date().toISOString(),
+                status: 'active'
+            },
+            {
+                id: '8',
+                title: 'サステナブルショッピング調査',
+                description: '環境に配慮した買い物についての意識を調査します',
+                category: 'ショッピング',
+                points: 110,
+                estimatedTime: 7,
+                image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400&h=200&fit=crop',
+                questions: [
+                    {
+                        id: 'q1',
+                        type: 'single',
+                        question: '環境に配慮した商品を選ぶ頻度はどのくらいですか？',
+                        options: ['いつも', '時々', 'まれに', '全くない']
+                    },
+                    {
+                        id: 'q2',
+                        type: 'multiple',
+                        question: '環境配慮で重視している点を選択してください（複数選択可）',
+                        options: ['リサイクル素材', '省エネ', '地産地消', '包装の簡素化', 'その他']
+                    }
+                ],
+                createdAt: new Date().toISOString(),
+                status: 'active'
             }
         ];
 

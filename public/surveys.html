@@ -125,19 +125,25 @@
             <h3 class="text-xl font-semibold text-gray-900 mb-4">カテゴリーで絞り込み</h3>
             <div class="flex flex-wrap gap-3">
                 <button class="category-filter bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors" data-category="all">
-                    すべて
+                    <i class="fas fa-th-large mr-2"></i>すべて
                 </button>
                 <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="テクノロジー">
-                    テクノロジー
+                    <i class="fas fa-laptop-code mr-2"></i>テクノロジー
                 </button>
                 <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ショッピング">
-                    ショッピング
+                    <i class="fas fa-shopping-cart mr-2"></i>ショッピング
                 </button>
                 <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ビジネス">
-                    ビジネス
+                    <i class="fas fa-briefcase mr-2"></i>ビジネス
                 </button>
                 <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ライフスタイル">
-                    ライフスタイル
+                    <i class="fas fa-heart mr-2"></i>ライフスタイル
+                </button>
+                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="エンターテイメント">
+                    <i class="fas fa-gamepad mr-2"></i>エンターテイメント
+                </button>
+                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ヘルスケア">
+                    <i class="fas fa-heartbeat mr-2"></i>ヘルスケア
                 </button>
             </div>
         </div>
@@ -288,20 +294,56 @@
             // カテゴリーフィルター
             document.querySelectorAll('.category-filter').forEach(button => {
                 button.addEventListener('click', function() {
+                    // ボタンのアニメーション効果
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                    
                     // アクティブ状態の更新
                     document.querySelectorAll('.category-filter').forEach(btn => {
-                        btn.classList.remove('bg-blue-500', 'text-white');
+                        btn.classList.remove('bg-blue-500', 'text-white', 'shadow-lg');
                         btn.classList.add('bg-gray-200', 'text-gray-700');
                     });
                     
                     this.classList.remove('bg-gray-200', 'text-gray-700');
-                    this.classList.add('bg-blue-500', 'text-white');
+                    this.classList.add('bg-blue-500', 'text-white', 'shadow-lg');
                     
                     // カテゴリー更新
                     currentCategory = this.dataset.category;
-                    loadSurveys();
+                    
+                    // フィルター適用の視覚的フィードバック
+                    const surveysGrid = document.getElementById('surveysGrid');
+                    surveysGrid.style.opacity = '0.5';
+                    surveysGrid.style.transform = 'scale(0.98)';
+                    
+                    setTimeout(() => {
+                        loadSurveys();
+                        surveysGrid.style.opacity = '1';
+                        surveysGrid.style.transform = 'scale(1)';
+                    }, 200);
+                    
+                    // カテゴリー名の表示更新
+                    updateCategoryTitle();
                 });
             });
+        }
+        
+        function updateCategoryTitle() {
+            const categoryNames = {
+                'all': 'すべてのアンケート',
+                'テクノロジー': 'テクノロジー関連のアンケート',
+                'ショッピング': 'ショッピング関連のアンケート',
+                'ビジネス': 'ビジネス関連のアンケート',
+                'ライフスタイル': 'ライフスタイル関連のアンケート',
+                'エンターテイメント': 'エンターテイメント関連のアンケート',
+                'ヘルスケア': 'ヘルスケア関連のアンケート'
+            };
+            
+            const title = document.querySelector('h1');
+            if (title) {
+                title.textContent = categoryNames[currentCategory] || 'アンケート一覧';
+            }
         }
 
         function logout() {
