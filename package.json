@@ -2,13 +2,14 @@
   "name": "survey-monitor-site",
   "version": "1.0.0",
   "description": "Modern Survey Monitor Site",
-  "main": "index.html",
+  "main": "public/index.html",
   "scripts": {
-    "build": "echo 'Static site - no build needed'",
-    "start": "echo 'Static site - no start needed'",
-    "dev": "echo 'Static site - no dev server needed'"
+    "build": "echo 'Static site - no build required'",
+    "dev": "echo 'Static site - serve from public directory'",
+    "start": "echo 'Static site deployed'",
+    "vercel-build": "echo 'Vercel deployment ready'"
   },
-  "keywords": ["survey", "monitor", "static", "vercel"],
+  "keywords": ["survey", "monitor", "static"],
   "author": "Survey Monitor Team",
   "license": "MIT",
   "engines": {

@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for Survey Monitor */
+.gradient-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.survey-card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden;
+}
+
+.survey-card:hover {
+    @apply shadow-lg transform -translate-y-1;
+}
+
+.category-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.btn-primary {
+    @apply bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors;
+}
+
+.btn-secondary {
+    @apply bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors;
+}
+
+.stats-card {
+    @apply bg-white p-6 rounded-lg shadow-sm text-center;
+}
+
+.nav-link {
+    @apply text-gray-700 hover:text-blue-600 font-medium transition-colors;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-title {
+        @apply text-3xl;
+    }
+    
+    .hero-subtitle {
+        @apply text-lg;
+    }
+}

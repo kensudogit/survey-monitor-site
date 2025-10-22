@@ -1,15 +1,29 @@
 {
   "version": 2,
+  "name": "survey-monitor-site",
   "builds": [
     {
-      "src": "index.html",
+      "src": "public/**",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/public/$1"
     }
-  ]
+  ],
+  "functions": {
+    "public/index.html": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "public": true,
+  "github": {
+    "enabled": true,
+    "autoAlias": true
+  }
 }

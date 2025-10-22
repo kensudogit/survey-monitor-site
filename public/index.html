@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Monitor - アンケートモニターサイト</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-gray-900">Survey Monitor</h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="/" class="text-gray-700 hover:text-blue-600 font-medium">ホーム</a>
+                    <a href="/surveys" class="text-gray-700 hover:text-blue-600 font-medium">アンケート一覧</a>
+                    <a href="/dashboard" class="text-gray-700 hover:text-blue-600 font-medium">ダッシュボード</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <a href="/login" class="text-gray-700 hover:text-blue-600 font-medium">ログイン</a>
+                    <a href="/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">新規登録</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6">アンケートでポイントを獲得</h2>
+            <p class="text-xl md:text-2xl mb-8 opacity-90">あなたの意見が価値に変わります</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/register" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    今すぐ始める
+                </a>
+                <a href="/surveys" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                    アンケートを見る
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600 mb-2">71</div>
+                    <div class="text-gray-600">利用可能なアンケート</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2">1,250</div>
+                    <div class="text-gray-600">登録ユーザー数</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-600 mb-2">15,680</div>
+                    <div class="text-gray-600">獲得ポイント総数</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-orange-600 mb-2">6.5分</div>
+                    <div class="text-gray-600">平均回答時間</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Surveys -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center">おすすめアンケート</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md card-hover">
+                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=200&fit=crop" alt="スマートフォンアプリの使用状況調査" class="w-full h-48 object-cover rounded-t-lg">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">テクノロジー</span>
+                            <span class="text-sm text-gray-500">5分</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">スマートフォンアプリの使用状況調査</h4>
+                        <p class="text-gray-600 text-sm mb-4">日常的なスマートフォンアプリの利用状況について調査します</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-green-600">100pt</span>
+                            <a href="/surveys/1" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">回答する</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md card-hover">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=200&fit=crop" alt="オンラインショッピングの満足度調査" class="w-full h-48 object-cover rounded-t-lg">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">ショッピング</span>
+                            <span class="text-sm text-gray-500">7分</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">オンラインショッピングの満足度調査</h4>
+                        <p class="text-gray-600 text-sm mb-4">ECサイトでの買い物体験についてお聞きします</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-green-600">150pt</span>
+                            <a href="/surveys/2" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">回答する</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md card-hover">
+                    <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400&h=200&fit=crop" alt="働き方改革に関する意識調査" class="w-full h-48 object-cover rounded-t-lg">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">ビジネス</span>
+                            <span class="text-sm text-gray-500">10分</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">働き方改革に関する意識調査</h4>
+                        <p class="text-gray-600 text-sm mb-4">リモートワークや働き方についての意識を調査します</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-green-600">200pt</span>
+                            <a href="/surveys/3" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">回答する</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center">カテゴリー</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="bg-blue-500 text-white p-6 rounded-lg text-center hover:bg-blue-600 transition-colors cursor-pointer">
+                    <i class="fas fa-laptop-code text-2xl mb-2"></i>
+                    <div class="font-semibold">テクノロジー</div>
+                    <div class="text-sm opacity-90">15件</div>
+                </div>
+                <div class="bg-green-500 text-white p-6 rounded-lg text-center hover:bg-green-600 transition-colors cursor-pointer">
+                    <i class="fas fa-shopping-cart text-2xl mb-2"></i>
+                    <div class="font-semibold">ショッピング</div>
+                    <div class="text-sm opacity-90">12件</div>
+                </div>
+                <div class="bg-purple-500 text-white p-6 rounded-lg text-center hover:bg-purple-600 transition-colors cursor-pointer">
+                    <i class="fas fa-briefcase text-2xl mb-2"></i>
+                    <div class="font-semibold">ビジネス</div>
+                    <div class="text-sm opacity-90">8件</div>
+                </div>
+                <div class="bg-pink-500 text-white p-6 rounded-lg text-center hover:bg-pink-600 transition-colors cursor-pointer">
+                    <i class="fas fa-heart text-2xl mb-2"></i>
+                    <div class="font-semibold">ライフスタイル</div>
+                    <div class="text-sm opacity-90">20件</div>
+                </div>
+                <div class="bg-yellow-500 text-white p-6 rounded-lg text-center hover:bg-yellow-600 transition-colors cursor-pointer">
+                    <i class="fas fa-gamepad text-2xl mb-2"></i>
+                    <div class="font-semibold">エンターテイメント</div>
+                    <div class="text-sm opacity-90">10件</div>
+                </div>
+                <div class="bg-red-500 text-white p-6 rounded-lg text-center hover:bg-red-600 transition-colors cursor-pointer">
+                    <i class="fas fa-heartbeat text-2xl mb-2"></i>
+                    <div class="font-semibold">ヘルスケア</div>
+                    <div class="text-sm opacity-90">6件</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center">使い方</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-plus text-2xl text-blue-600"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-2">1. アカウント作成</h4>
+                    <p class="text-gray-600">無料でアカウントを作成して、アンケートに参加しましょう</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-clipboard-list text-2xl text-green-600"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-2">2. アンケート回答</h4>
+                    <p class="text-gray-600">興味のあるアンケートを選んで、簡単に回答できます</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-gift text-2xl text-purple-600"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-2">3. ポイント獲得</h4>
+                    <p class="text-gray-600">回答完了でポイントが付与され、様々な特典と交換できます</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Survey Monitor</h4>
+                    <p class="text-gray-400">あなたの意見が価値に変わります。アンケートでポイントを獲得しましょう。</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">サービス</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="/surveys" class="hover:text-white">アンケート一覧</a></li>
+                        <li><a href="/dashboard" class="hover:text-white">ダッシュボード</a></li>
+                        <li><a href="/profile" class="hover:text-white">プロフィール</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">サポート</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">ヘルプセンター</a></li>
+                        <li><a href="#" class="hover:text-white">お問い合わせ</a></li>
+                        <li><a href="#" class="hover:text-white">利用規約</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">フォローする</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Survey Monitor. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
