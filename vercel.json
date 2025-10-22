@@ -20,5 +20,8 @@
     "app/Http/Controllers/**/*.php": {
       "runtime": "@vercel/php"
     }
-  }
+  },
+  "installCommand": "composer install --no-dev --optimize-autoloader",
+  "buildCommand": "echo 'Build completed'",
+  "outputDirectory": "public"
 }

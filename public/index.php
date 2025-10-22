@@ -5,10 +5,10 @@ if (getenv('VERCEL')) {
     // Vercel環境での設定
     $_ENV['APP_ENV'] = 'production';
     $_ENV['APP_DEBUG'] = 'false';
-    $_ENV['APP_URL'] = 'https://survey-monitor-site.vercel.app';
+    $_ENV['APP_URL'] = getenv('VERCEL_URL') ? 'https://' . getenv('VERCEL_URL') : 'https://survey-monitor-site.vercel.app';
     
     // データベース設定（PlanetScaleやSupabaseなど）
-    $_ENV['DB_CONNECTION'] = 'mysql';
+    $_ENV['DB_CONNECTION'] = getenv('DB_CONNECTION') ?: 'mysql';
     $_ENV['DB_HOST'] = getenv('DB_HOST') ?: 'localhost';
     $_ENV['DB_PORT'] = getenv('DB_PORT') ?: '3306';
     $_ENV['DB_DATABASE'] = getenv('DB_DATABASE') ?: 'survey_monitor';
@@ -23,6 +23,11 @@ if (getenv('VERCEL')) {
     // セッション設定
     $_ENV['SESSION_DRIVER'] = 'file';
     $_ENV['CACHE_DRIVER'] = 'file';
+    
+    // アプリケーションキー
+    if (!getenv('APP_KEY')) {
+        $_ENV['APP_KEY'] = 'base64:' . base64_encode(random_bytes(32));
+    }
 }
 
 // Laravelアプリケーションの起動
