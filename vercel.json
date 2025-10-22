@@ -2,6 +2,10 @@
   "version": 2,
   "builds": [
     {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "public/**/*",
       "use": "@vercel/static"
     }
@@ -12,22 +16,21 @@
       "dest": "/public/favicon.ico"
     },
     {
-      "src": "/assets/(.*)",
-      "dest": "/public/assets/$1"
+      "src": "/css/(.*)",
+      "dest": "/public/css/$1"
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "/public/js/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/public/index.html"
+      "dest": "/index.html"
     }
   ],
-  "env": {
-    "APP_ENV": "production",
-    "APP_DEBUG": "false",
-    "APP_URL": "https://survey-monitor-site.vercel.app"
-  },
-  "installCommand": "npm install",
+  "installCommand": "echo 'No dependencies needed'",
   "buildCommand": "echo 'Static site - no build needed'",
-  "outputDirectory": "public",
+  "outputDirectory": ".",
   "framework": null,
   "regions": ["nrt1"],
   "public": true
