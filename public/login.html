@@ -197,7 +197,16 @@
     <!-- Scripts -->
     <script src="js/auth.js"></script>
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // ページ読み込み完了後に認証マネージャーの準備を確認
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!window.authManager) {
+                console.error('AuthManager is not loaded');
+                alert('システムエラー: 認証システムが読み込まれていません。ページを再読み込みしてください。');
+                return;
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
@@ -210,13 +219,17 @@
             }
             
             // ログイン処理
-            const result = window.authManager.login(email, password);
-            
-            if (result.success) {
-                alert('ログイン成功！ダッシュボードに移動します。');
-                window.location.href = '/dashboard.html';
-            } else {
-                alert('エラー: ' + result.error);
+            try {
+                const result = await window.authManager.login(email, password);
+                
+                if (result.success) {
+                    alert('ログイン成功！ダッシュボードに移動します。');
+                    window.location.href = '/dashboard.html';
+                } else {
+                    alert('エラー: ' + result.error);
+                }
+            } catch (error) {
+                alert('エラー: ' + (error.message || '不明なエラーが発生しました'));
             }
         });
         
