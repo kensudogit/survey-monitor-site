@@ -89,12 +89,12 @@
                 </div>
                 <nav class="hidden md:flex space-x-8">
                     <a href="/" class="text-white hover:text-blue-200 font-medium transition-colors">ホーム</a>
-                    <a href="/surveys" class="text-white hover:text-blue-200 font-medium transition-colors">アンケート一覧</a>
-                    <a href="/dashboard" class="text-white hover:text-blue-200 font-medium transition-colors">ダッシュボード</a>
+                    <a href="/surveys.html" class="text-white hover:text-blue-200 font-medium transition-colors">アンケート一覧</a>
+                    <a href="/dashboard.html" class="text-white hover:text-blue-200 font-medium transition-colors">ダッシュボード</a>
                 </nav>
                 <div class="flex items-center space-x-4">
-                    <a href="/login" class="text-white font-medium hover:text-blue-200 transition-colors">ログイン</a>
-                    <a href="/register" class="bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-all hover-lift font-semibold">新規登録</a>
+                    <a href="/login.html" class="text-white font-medium hover:text-blue-200 transition-colors">ログイン</a>
+                    <a href="/register.html" class="bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-all hover-lift font-semibold">新規登録</a>
                 </div>
             </div>
         </div>
@@ -175,7 +175,7 @@
                     <div class="text-center pt-4 border-t border-white/20">
                         <p class="text-blue-100">
                             アカウントをお持ちでない方は
-                            <a href="/register" class="font-medium text-white hover:text-blue-200 transition-colors">
+                            <a href="/register.html" class="font-medium text-white hover:text-blue-200 transition-colors">
                                 新規登録
                             </a>
                         </p>
@@ -194,6 +194,8 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -207,12 +209,14 @@
                 return;
             }
             
-            // ログイン処理（デモ）
-            if (email === 'demo@example.com' && password === 'demo123') {
+            // ログイン処理
+            const result = window.authManager.login(email, password);
+            
+            if (result.success) {
                 alert('ログイン成功！ダッシュボードに移動します。');
-                window.location.href = '/dashboard';
+                window.location.href = '/dashboard.html';
             } else {
-                alert('メールアドレスまたはパスワードが正しくありません。');
+                alert('エラー: ' + result.error);
             }
         });
         

@@ -22,12 +22,12 @@
                 </div>
                 <nav class="hidden md:flex space-x-8">
                     <a href="/" class="text-gray-700 hover:text-blue-600 font-medium">ホーム</a>
-                    <a href="/surveys" class="text-gray-700 hover:text-blue-600 font-medium">アンケート一覧</a>
-                    <a href="/dashboard" class="text-gray-700 hover:text-blue-600 font-medium">ダッシュボード</a>
+                    <a href="/surveys.html" class="text-gray-700 hover:text-blue-600 font-medium">アンケート一覧</a>
+                    <a href="/dashboard.html" class="text-gray-700 hover:text-blue-600 font-medium">ダッシュボード</a>
                 </nav>
                 <div class="flex items-center space-x-4">
-                    <a href="/login" class="text-gray-700 hover:text-blue-600 font-medium">ログイン</a>
-                    <a href="/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">新規登録</a>
+                    <a href="/login.html" class="text-gray-700 hover:text-blue-600 font-medium">ログイン</a>
+                    <a href="/register.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">新規登録</a>
                 </div>
             </div>
         </div>
@@ -42,7 +42,7 @@
                 </h2>
                 <p class="mt-2 text-center text-sm text-gray-600">
                     または
-                    <a href="/login" class="font-medium text-blue-600 hover:text-blue-500">
+                    <a href="/login.html" class="font-medium text-blue-600 hover:text-blue-500">
                         既存のアカウントでログイン
                     </a>
                 </p>
@@ -133,6 +133,8 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -166,9 +168,21 @@
                 return;
             }
             
-            // 登録処理（デモ）
-            alert('アカウントが作成されました！ログインしてください。');
-            window.location.href = '/login';
+            // 登録処理
+            const result = window.authManager.register({
+                name: name,
+                email: email,
+                password: password,
+                age: age,
+                gender: gender
+            });
+            
+            if (result.success) {
+                alert('アカウントが作成されました！ログインしてください。');
+                window.location.href = '/login.html';
+            } else {
+                alert('エラー: ' + result.error);
+            }
         });
     </script>
 </body>
