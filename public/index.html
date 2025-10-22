@@ -287,6 +287,10 @@
             // 認証状態の更新
             window.authManager.updateUI();
             updateUserInfo();
+            
+            // デバッグ情報
+            console.log('Current user:', window.authManager.currentUser);
+            console.log('Is authenticated:', window.authManager.isAuthenticated());
         });
 
         function updateUserInfo() {
@@ -305,8 +309,9 @@
         }
 
         function logout() {
+            console.log('Logging out from index page');
             window.authManager.logout();
-            window.location.href = '/';
+            // ログアウト処理はauth.jsで行われるため、ここでは何もしない
         }
     </script>
 </body>

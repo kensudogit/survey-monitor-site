@@ -82,9 +82,15 @@ class AuthManager {
 
     // ログアウト
     logout() {
+        console.log('Logging out user:', this.currentUser?.name);
         this.currentUser = null;
         localStorage.removeItem('survey_monitor_user');
         this.updateUI();
+        
+        // ログアウト後のリダイレクト処理
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 100);
     }
 
     // ユーザーデータバリデーション
@@ -172,6 +178,39 @@ class AuthManager {
         }
     }
 
+    // デモユーザーでログイン
+    loginDemo() {
+        const demoUser = {
+            id: 'demo_user',
+            name: 'デモユーザー',
+            email: 'demo@example.com',
+            password: this.hashPassword('demo123'),
+            age: '25-34',
+            gender: 'その他',
+            points: 150,
+            surveysCompleted: ['survey_1', 'survey_2'],
+            joinDate: new Date().toISOString(),
+            lastLogin: new Date().toISOString()
+        };
+
+        // デモユーザーを保存
+        const users = this.getUsers();
+        const existingDemoIndex = users.findIndex(u => u.id === 'demo_user');
+        if (existingDemoIndex !== -1) {
+            users[existingDemoIndex] = demoUser;
+        } else {
+            users.push(demoUser);
+        }
+        localStorage.setItem('survey_monitor_users', JSON.stringify(users));
+
+        // ログイン状態に設定
+        this.currentUser = demoUser;
+        localStorage.setItem('survey_monitor_user', JSON.stringify(demoUser));
+        this.updateUI();
+
+        return { success: true, user: demoUser };
+    }
+
     // 認証チェック
     requireAuth() {
         if (!this.currentUser) {
@@ -180,6 +219,11 @@ class AuthManager {
             return false;
         }
         return true;
+    }
+
+    // 認証状態の確認
+    isAuthenticated() {
+        return this.currentUser !== null;
     }
 }
 

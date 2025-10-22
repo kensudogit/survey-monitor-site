@@ -258,9 +258,21 @@
             }
         });
         
-        function loginDemo() {
-            document.getElementById('email').value = 'demo@example.com';
-            document.getElementById('password').value = 'demo123';
+        async function loginDemo() {
+            try {
+                console.log('Logging in with demo user');
+                const result = window.authManager.loginDemo();
+                
+                if (result.success) {
+                    alert('デモユーザーでログインしました！ダッシュボードに移動します。');
+                    window.location.href = '/dashboard.html';
+                } else {
+                    alert('デモユーザーログインに失敗しました');
+                }
+            } catch (error) {
+                console.error('Demo login error:', error);
+                alert('デモユーザーログインエラー: ' + (error.message || '不明なエラーが発生しました'));
+            }
         }
     </script>
 </body>
