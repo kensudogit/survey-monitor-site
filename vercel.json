@@ -8,6 +8,34 @@
   ],
   "routes": [
     {
+      "src": "/",
+      "dest": "/public/index.html"
+    },
+    {
+      "src": "/login.html",
+      "dest": "/public/login.html"
+    },
+    {
+      "src": "/register.html",
+      "dest": "/public/register.html"
+    },
+    {
+      "src": "/surveys.html",
+      "dest": "/public/surveys.html"
+    },
+    {
+      "src": "/dashboard.html",
+      "dest": "/public/dashboard.html"
+    },
+    {
+      "src": "/survey.html",
+      "dest": "/public/survey.html"
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "/public/js/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/$1"
     }
