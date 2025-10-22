@@ -120,31 +120,45 @@
             </div>
         </div>
 
-        <!-- Category Filters -->
+        <!-- Category Navigation -->
         <div class="mb-8">
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">カテゴリーで絞り込み</h3>
-            <div class="flex flex-wrap gap-3">
-                <button class="category-filter bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors" data-category="all">
-                    <i class="fas fa-th-large mr-2"></i>すべて
-                </button>
-                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="テクノロジー">
-                    <i class="fas fa-laptop-code mr-2"></i>テクノロジー
-                </button>
-                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ショッピング">
-                    <i class="fas fa-shopping-cart mr-2"></i>ショッピング
-                </button>
-                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ビジネス">
-                    <i class="fas fa-briefcase mr-2"></i>ビジネス
-                </button>
-                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ライフスタイル">
-                    <i class="fas fa-heart mr-2"></i>ライフスタイル
-                </button>
-                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="エンターテイメント">
-                    <i class="fas fa-gamepad mr-2"></i>エンターテイメント
-                </button>
-                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ヘルスケア">
-                    <i class="fas fa-heartbeat mr-2"></i>ヘルスケア
-                </button>
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">カテゴリー</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <a href="/category.html?category=all" class="category-card bg-blue-500 text-white p-6 rounded-lg text-center hover:bg-blue-600 transition-all hover-lift">
+                    <i class="fas fa-th-large text-2xl mb-2"></i>
+                    <div class="font-semibold">すべて</div>
+                    <div class="text-sm opacity-90" id="allCount">8件</div>
+                </a>
+                <a href="/category.html?category=テクノロジー" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                    <i class="fas fa-laptop-code text-2xl mb-2"></i>
+                    <div class="font-semibold">テクノロジー</div>
+                    <div class="text-sm opacity-90" id="techCount">2件</div>
+                </a>
+                <a href="/category.html?category=ショッピング" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                    <i class="fas fa-shopping-cart text-2xl mb-2"></i>
+                    <div class="font-semibold">ショッピング</div>
+                    <div class="text-sm opacity-90" id="shoppingCount">2件</div>
+                </a>
+                <a href="/category.html?category=ビジネス" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                    <i class="fas fa-briefcase text-2xl mb-2"></i>
+                    <div class="font-semibold">ビジネス</div>
+                    <div class="text-sm opacity-90" id="businessCount">1件</div>
+                </a>
+                <a href="/category.html?category=ライフスタイル" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                    <i class="fas fa-heart text-2xl mb-2"></i>
+                    <div class="font-semibold">ライフスタイル</div>
+                    <div class="text-sm opacity-90" id="lifestyleCount">1件</div>
+                </a>
+                <a href="/category.html?category=エンターテイメント" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                    <i class="fas fa-gamepad text-2xl mb-2"></i>
+                    <div class="font-semibold">エンターテイメント</div>
+                    <div class="text-sm opacity-90" id="entertainmentCount">1件</div>
+                </a>
+                <a href="/category.html?category=ヘルスケア" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                    <i class="fas fa-heartbeat text-2xl mb-2"></i>
+                    <div class="font-semibold">ヘルスケア</div>
+                    <div class="text-sm opacity-90" id="healthcareCount">1件</div>
+                </a>
             </div>
         </div>
 
@@ -178,7 +192,6 @@
         // ページ読み込み時の初期化
         document.addEventListener('DOMContentLoaded', function() {
             initializePage();
-            setupEventListeners();
         });
 
         function initializePage() {
@@ -196,6 +209,7 @@
             // アンケート一覧読み込み
             loadSurveys();
             updateStats();
+            updateCategoryCounts();
         }
 
         function updateUserInfo() {
@@ -288,6 +302,30 @@
             document.getElementById('completedSurveys').textContent = completedSurveys.length;
             document.getElementById('totalPoints').textContent = user.points;
             document.getElementById('avgTime').textContent = '6.5分';
+        }
+
+        function updateCategoryCounts() {
+            const allSurveys = window.surveyManager.getSurveys();
+            
+            // 各カテゴリーのアンケート数を計算
+            const counts = {
+                'all': allSurveys.length,
+                'テクノロジー': allSurveys.filter(s => s.category === 'テクノロジー').length,
+                'ショッピング': allSurveys.filter(s => s.category === 'ショッピング').length,
+                'ビジネス': allSurveys.filter(s => s.category === 'ビジネス').length,
+                'ライフスタイル': allSurveys.filter(s => s.category === 'ライフスタイル').length,
+                'エンターテイメント': allSurveys.filter(s => s.category === 'エンターテイメント').length,
+                'ヘルスケア': allSurveys.filter(s => s.category === 'ヘルスケア').length
+            };
+
+            // カウントを更新
+            document.getElementById('allCount').textContent = `${counts.all}件`;
+            document.getElementById('techCount').textContent = `${counts.テクノロジー}件`;
+            document.getElementById('shoppingCount').textContent = `${counts.ショッピング}件`;
+            document.getElementById('businessCount').textContent = `${counts.ビジネス}件`;
+            document.getElementById('lifestyleCount').textContent = `${counts.ライフスタイル}件`;
+            document.getElementById('entertainmentCount').textContent = `${counts.エンターテイメント}件`;
+            document.getElementById('healthcareCount').textContent = `${counts.ヘルスケア}件`;
         }
 
         function setupEventListeners() {

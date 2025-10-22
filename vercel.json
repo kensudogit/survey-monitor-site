@@ -32,6 +32,10 @@
       "dest": "/public/survey.html"
     },
     {
+      "src": "/category.html",
+      "dest": "/public/category.html"
+    },
+    {
       "src": "/js/(.*)",
       "dest": "/public/js/$1"
     },
