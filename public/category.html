@@ -203,9 +203,14 @@
             // URLからカテゴリーを取得
             const urlParams = new URLSearchParams(window.location.search);
             currentCategory = urlParams.get('category') || 'all';
+            
+            // デバッグ情報
+            console.log('Current category:', currentCategory);
+            console.log('URL params:', window.location.search);
 
             // 認証チェック
-            if (!window.authManager.currentUser) {
+            if (!window.authManager || !window.authManager.currentUser) {
+                console.log('No auth manager or user found, redirecting to login');
                 alert('ログインが必要です');
                 window.location.href = '/login.html';
                 return;

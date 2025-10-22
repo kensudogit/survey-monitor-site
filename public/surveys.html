@@ -129,32 +129,32 @@
                     <div class="font-semibold">すべて</div>
                     <div class="text-sm opacity-90" id="allCount">8件</div>
                 </a>
-                <a href="/category.html?category=テクノロジー" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                <a href="/category.html?category=テクノロジー" class="category-card bg-blue-500 text-white p-6 rounded-lg text-center hover:bg-blue-600 transition-all hover-lift">
                     <i class="fas fa-laptop-code text-2xl mb-2"></i>
                     <div class="font-semibold">テクノロジー</div>
                     <div class="text-sm opacity-90" id="techCount">2件</div>
                 </a>
-                <a href="/category.html?category=ショッピング" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                <a href="/category.html?category=ショッピング" class="category-card bg-green-500 text-white p-6 rounded-lg text-center hover:bg-green-600 transition-all hover-lift">
                     <i class="fas fa-shopping-cart text-2xl mb-2"></i>
                     <div class="font-semibold">ショッピング</div>
                     <div class="text-sm opacity-90" id="shoppingCount">2件</div>
                 </a>
-                <a href="/category.html?category=ビジネス" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                <a href="/category.html?category=ビジネス" class="category-card bg-purple-500 text-white p-6 rounded-lg text-center hover:bg-purple-600 transition-all hover-lift">
                     <i class="fas fa-briefcase text-2xl mb-2"></i>
                     <div class="font-semibold">ビジネス</div>
                     <div class="text-sm opacity-90" id="businessCount">1件</div>
                 </a>
-                <a href="/category.html?category=ライフスタイル" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                <a href="/category.html?category=ライフスタイル" class="category-card bg-pink-500 text-white p-6 rounded-lg text-center hover:bg-pink-600 transition-all hover-lift">
                     <i class="fas fa-heart text-2xl mb-2"></i>
                     <div class="font-semibold">ライフスタイル</div>
                     <div class="text-sm opacity-90" id="lifestyleCount">1件</div>
                 </a>
-                <a href="/category.html?category=エンターテイメント" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                <a href="/category.html?category=エンターテイメント" class="category-card bg-yellow-500 text-white p-6 rounded-lg text-center hover:bg-yellow-600 transition-all hover-lift">
                     <i class="fas fa-gamepad text-2xl mb-2"></i>
                     <div class="font-semibold">エンターテイメント</div>
                     <div class="text-sm opacity-90" id="entertainmentCount">1件</div>
                 </a>
-                <a href="/category.html?category=ヘルスケア" class="category-card bg-gray-200 text-gray-700 p-6 rounded-lg text-center hover:bg-gray-300 transition-all hover-lift">
+                <a href="/category.html?category=ヘルスケア" class="category-card bg-red-500 text-white p-6 rounded-lg text-center hover:bg-red-600 transition-all hover-lift">
                     <i class="fas fa-heartbeat text-2xl mb-2"></i>
                     <div class="font-semibold">ヘルスケア</div>
                     <div class="text-sm opacity-90" id="healthcareCount">1件</div>
@@ -328,61 +328,7 @@
             document.getElementById('healthcareCount').textContent = `${counts.ヘルスケア}件`;
         }
 
-        function setupEventListeners() {
-            // カテゴリーフィルター
-            document.querySelectorAll('.category-filter').forEach(button => {
-                button.addEventListener('click', function() {
-                    // ボタンのアニメーション効果
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                    }, 150);
-                    
-                    // アクティブ状態の更新
-                    document.querySelectorAll('.category-filter').forEach(btn => {
-                        btn.classList.remove('bg-blue-500', 'text-white', 'shadow-lg');
-                        btn.classList.add('bg-gray-200', 'text-gray-700');
-                    });
-                    
-                    this.classList.remove('bg-gray-200', 'text-gray-700');
-                    this.classList.add('bg-blue-500', 'text-white', 'shadow-lg');
-                    
-                    // カテゴリー更新
-                    currentCategory = this.dataset.category;
-                    
-                    // フィルター適用の視覚的フィードバック
-                    const surveysGrid = document.getElementById('surveysGrid');
-                    surveysGrid.style.opacity = '0.5';
-                    surveysGrid.style.transform = 'scale(0.98)';
-                    
-                    setTimeout(() => {
-                        loadSurveys();
-                        surveysGrid.style.opacity = '1';
-                        surveysGrid.style.transform = 'scale(1)';
-                    }, 200);
-                    
-                    // カテゴリー名の表示更新
-                    updateCategoryTitle();
-                });
-            });
-        }
-        
-        function updateCategoryTitle() {
-            const categoryNames = {
-                'all': 'すべてのアンケート',
-                'テクノロジー': 'テクノロジー関連のアンケート',
-                'ショッピング': 'ショッピング関連のアンケート',
-                'ビジネス': 'ビジネス関連のアンケート',
-                'ライフスタイル': 'ライフスタイル関連のアンケート',
-                'エンターテイメント': 'エンターテイメント関連のアンケート',
-                'ヘルスケア': 'ヘルスケア関連のアンケート'
-            };
-            
-            const title = document.querySelector('h1');
-            if (title) {
-                title.textContent = categoryNames[currentCategory] || 'アンケート一覧';
-            }
-        }
+        // カテゴリーボタンはリンクとして動作するため、イベントリスナーは不要
 
         function logout() {
             window.authManager.logout();
