@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "survey-monitor-site",
   "builds": [
     {
       "src": "public/**",
@@ -13,11 +12,6 @@
       "dest": "/public/$1"
     }
   ],
-  "functions": {
-    "public/index.html": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "env": {
     "NODE_ENV": "production"
   },
