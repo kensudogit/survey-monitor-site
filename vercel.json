@@ -2,35 +2,27 @@
   "version": 2,
   "builds": [
     {
-      "src": "index.html",
+      "src": "vercel-static/index.html",
       "use": "@vercel/static"
     },
     {
-      "src": "public/**/*",
+      "src": "vercel-static/favicon.ico",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/favicon.ico",
-      "dest": "/public/favicon.ico"
-    },
-    {
-      "src": "/css/(.*)",
-      "dest": "/public/css/$1"
-    },
-    {
-      "src": "/js/(.*)",
-      "dest": "/public/js/$1"
+      "dest": "/vercel-static/favicon.ico"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/vercel-static/index.html"
     }
   ],
-  "installCommand": "echo 'No dependencies needed'",
+  "installCommand": "echo 'Static site - no install needed'",
   "buildCommand": "echo 'Static site - no build needed'",
-  "outputDirectory": ".",
+  "outputDirectory": "vercel-static",
   "framework": null,
   "regions": ["nrt1"],
   "public": true
