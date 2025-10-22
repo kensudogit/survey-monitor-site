@@ -29,12 +29,22 @@
                 </div>
                 <nav class="hidden md:flex space-x-8">
                     <a href="/" class="text-gray-700 hover:text-blue-600 font-medium">ホーム</a>
-                    <a href="/surveys" class="text-gray-700 hover:text-blue-600 font-medium">アンケート一覧</a>
-                    <a href="/dashboard" class="text-gray-700 hover:text-blue-600 font-medium">ダッシュボード</a>
+                    <a href="/surveys.html" class="text-gray-700 hover:text-blue-600 font-medium">アンケート一覧</a>
+                    <a href="/dashboard.html" class="text-gray-700 hover:text-blue-600 font-medium">ダッシュボード</a>
                 </nav>
                 <div class="flex items-center space-x-4">
-                    <a href="/login" class="text-gray-700 hover:text-blue-600 font-medium">ログイン</a>
-                    <a href="/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">新規登録</a>
+                    <div class="user-info hidden">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-user-circle text-gray-700"></i>
+                            <span class="text-gray-700" id="userName">ユーザー名</span>
+                            <span class="text-blue-600" id="userPoints">(0pt)</span>
+                        </div>
+                    </div>
+                    <a href="/login.html" class="login-link text-gray-700 hover:text-blue-600 font-medium">ログイン</a>
+                    <a href="/register.html" class="login-link bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">新規登録</a>
+                    <button class="logout-btn hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors" onclick="logout()">
+                        ログアウト
+                    </button>
                 </div>
             </div>
         </div>
@@ -46,10 +56,10 @@
             <h2 class="text-4xl md:text-6xl font-bold mb-6">アンケートでポイントを獲得</h2>
             <p class="text-xl md:text-2xl mb-8 opacity-90">あなたの意見が価値に変わります</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/register" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                <a href="/register.html" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
                     今すぐ始める
                 </a>
-                <a href="/surveys" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                <a href="/surveys.html" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
                     アンケートを見る
                 </a>
             </div>
@@ -96,7 +106,7 @@
                         <p class="text-gray-600 text-sm mb-4">日常的なスマートフォンアプリの利用状況について調査します</p>
                         <div class="flex items-center justify-between">
                             <span class="text-lg font-bold text-green-600">100pt</span>
-                            <a href="/surveys/1" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">回答する</a>
+                            <a href="/survey.html?id=1" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">回答する</a>
                         </div>
                     </div>
                 </div>
@@ -112,7 +122,7 @@
                         <p class="text-gray-600 text-sm mb-4">ECサイトでの買い物体験についてお聞きします</p>
                         <div class="flex items-center justify-between">
                             <span class="text-lg font-bold text-green-600">150pt</span>
-                            <a href="/surveys/2" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">回答する</a>
+                            <a href="/survey.html?id=2" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">回答する</a>
                         </div>
                     </div>
                 </div>
@@ -128,7 +138,7 @@
                         <p class="text-gray-600 text-sm mb-4">リモートワークや働き方についての意識を調査します</p>
                         <div class="flex items-center justify-between">
                             <span class="text-lg font-bold text-green-600">200pt</span>
-                            <a href="/surveys/3" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">回答する</a>
+                            <a href="/survey.html?id=3" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">回答する</a>
                         </div>
                     </div>
                 </div>
@@ -216,9 +226,9 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4">サービス</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="/surveys" class="hover:text-white">アンケート一覧</a></li>
-                        <li><a href="/dashboard" class="hover:text-white">ダッシュボード</a></li>
-                        <li><a href="/profile" class="hover:text-white">プロフィール</a></li>
+                        <li><a href="/surveys.html" class="hover:text-white">アンケート一覧</a></li>
+                        <li><a href="/dashboard.html" class="hover:text-white">ダッシュボード</a></li>
+                        <li><a href="/profile.html" class="hover:text-white">プロフィール</a></li>
                     </ul>
                 </div>
                 <div>
@@ -243,5 +253,29 @@
             </div>
         </div>
     </footer>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script>
+        // ページ読み込み時の初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 認証状態の更新
+            window.authManager.updateUI();
+            updateUserInfo();
+        });
+
+        function updateUserInfo() {
+            const user = window.authManager.currentUser;
+            if (user) {
+                document.getElementById('userName').textContent = user.name;
+                document.getElementById('userPoints').textContent = `(${user.points}pt)`;
+            }
+        }
+
+        function logout() {
+            window.authManager.logout();
+            window.location.href = '/';
+        }
+    </script>
 </body>
 </html>

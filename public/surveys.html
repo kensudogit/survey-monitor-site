@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アンケート一覧 - Survey Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-filter {
+            transition: all 0.3s ease;
+        }
+        
+        .category-filter:hover {
+            transform: scale(1.05);
+        }
+        
+        .survey-card {
+            transition: all 0.3s ease;
+        }
+        
+        .survey-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .completed-badge {
+            background: linear-gradient(45deg, #10b981, #059669);
+        }
+        
+        .points-glow {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-white hover:text-blue-200 transition-colors">
+                        <i class="fas fa-chart-line mr-2"></i>Survey Monitor
+                    </a>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="/" class="text-white hover:text-blue-200 font-medium transition-colors">ホーム</a>
+                    <a href="/surveys.html" class="text-white font-medium">アンケート一覧</a>
+                    <a href="/dashboard.html" class="text-white hover:text-blue-200 font-medium transition-colors">ダッシュボード</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <div class="user-info hidden">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-user-circle text-white"></i>
+                            <span class="text-white" id="userName">ユーザー名</span>
+                            <span class="text-blue-200" id="userPoints">(0pt)</span>
+                        </div>
+                    </div>
+                    <a href="/login.html" class="login-link text-white hover:text-blue-200 font-medium transition-colors">ログイン</a>
+                    <a href="/register.html" class="login-link bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-all hover-lift font-semibold">新規登録</a>
+                    <button class="logout-btn hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors" onclick="logout()">
+                        ログアウト
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">アンケート一覧</h1>
+            <p class="text-xl text-gray-600">興味のあるアンケートを選んで、ポイントを獲得しましょう</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600 mb-2" id="totalSurveys">0</div>
+                    <div class="text-gray-600">利用可能なアンケート</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2" id="completedSurveys">0</div>
+                    <div class="text-gray-600">完了済み</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-600 mb-2" id="totalPoints">0</div>
+                    <div class="text-gray-600">獲得ポイント</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-orange-600 mb-2" id="avgTime">0分</div>
+                    <div class="text-gray-600">平均回答時間</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">カテゴリーで絞り込み</h3>
+            <div class="flex flex-wrap gap-3">
+                <button class="category-filter bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors" data-category="all">
+                    すべて
+                </button>
+                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="テクノロジー">
+                    テクノロジー
+                </button>
+                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ショッピング">
+                    ショッピング
+                </button>
+                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ビジネス">
+                    ビジネス
+                </button>
+                <button class="category-filter bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" data-category="ライフスタイル">
+                    ライフスタイル
+                </button>
+            </div>
+        </div>
+
+        <!-- Surveys Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="surveysGrid">
+            <!-- Surveys will be loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="text-center py-12 hidden" id="emptyState">
+            <i class="fas fa-clipboard-list text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">アンケートが見つかりません</h3>
+            <p class="text-gray-600">選択したカテゴリーにはアンケートがありません</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 Survey Monitor. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/survey.js"></script>
+    <script>
+        let currentCategory = 'all';
+        let surveys = [];
+
+        // ページ読み込み時の初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        function initializePage() {
+            // 認証チェック
+            if (!window.authManager.currentUser) {
+                alert('ログインが必要です');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // UI更新
+            window.authManager.updateUI();
+            updateUserInfo();
+            
+            // アンケート一覧読み込み
+            loadSurveys();
+            updateStats();
+        }
+
+        function updateUserInfo() {
+            const user = window.authManager.currentUser;
+            if (user) {
+                document.getElementById('userName').textContent = user.name;
+                document.getElementById('userPoints').textContent = `(${user.points}pt)`;
+            }
+        }
+
+        function loadSurveys() {
+            const user = window.authManager.currentUser;
+            const allSurveys = window.surveyManager.getSurveys();
+            const completedSurveys = window.surveyManager.getUserCompletedSurveys(user.id);
+            const completedIds = completedSurveys.map(response => response.surveyId);
+
+            // カテゴリーフィルター適用
+            let filteredSurveys = allSurveys;
+            if (currentCategory !== 'all') {
+                filteredSurveys = allSurveys.filter(survey => survey.category === currentCategory);
+            }
+
+            surveys = filteredSurveys;
+            renderSurveys(filteredSurveys, completedIds);
+        }
+
+        function renderSurveys(surveysToRender, completedIds) {
+            const grid = document.getElementById('surveysGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (surveysToRender.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = surveysToRender.map(survey => {
+                const isCompleted = completedIds.includes(survey.id);
+                const categoryColors = {
+                    'テクノロジー': 'bg-blue-100 text-blue-800',
+                    'ショッピング': 'bg-green-100 text-green-800',
+                    'ビジネス': 'bg-purple-100 text-purple-800',
+                    'ライフスタイル': 'bg-pink-100 text-pink-800'
+                };
+
+                return `
+                    <div class="survey-card bg-white rounded-xl shadow-lg overflow-hidden">
+                        <img src="${survey.image}" alt="${survey.title}" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold ${categoryColors[survey.category] || 'bg-gray-100 text-gray-800'}">
+                                    ${survey.category}
+                                </span>
+                                ${isCompleted ? '<span class="completed-badge px-3 py-1 rounded-full text-xs font-semibold text-white"><i class="fas fa-check mr-1"></i>完了済み</span>' : ''}
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">${survey.title}</h3>
+                            <p class="text-gray-600 text-sm mb-4">${survey.description}</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                    <span><i class="fas fa-clock mr-1"></i>${survey.estimatedTime}分</span>
+                                    <span><i class="fas fa-question-circle mr-1"></i>${survey.questions.length}問</span>
+                                </div>
+                                <span class="text-lg font-bold text-green-600 points-glow">${survey.points}pt</span>
+                            </div>
+                            <button onclick="${isCompleted ? 'viewResults' : 'startSurvey'}('${survey.id}')" 
+                                    class="w-full ${isCompleted ? 'bg-gray-500 hover:bg-gray-600' : 'bg-blue-600 hover:bg-blue-700'} text-white py-2 px-4 rounded-lg transition-colors font-semibold">
+                                ${isCompleted ? '<i class="fas fa-eye mr-2"></i>結果を見る' : '<i class="fas fa-play mr-2"></i>回答する'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function startSurvey(surveyId) {
+            window.location.href = `/survey.html?id=${surveyId}`;
+        }
+
+        function viewResults(surveyId) {
+            alert('結果表示機能は準備中です');
+        }
+
+        function updateStats() {
+            const user = window.authManager.currentUser;
+            const allSurveys = window.surveyManager.getSurveys();
+            const completedSurveys = window.surveyManager.getUserCompletedSurveys(user.id);
+            
+            document.getElementById('totalSurveys').textContent = allSurveys.length;
+            document.getElementById('completedSurveys').textContent = completedSurveys.length;
+            document.getElementById('totalPoints').textContent = user.points;
+            document.getElementById('avgTime').textContent = '6.5分';
+        }
+
+        function setupEventListeners() {
+            // カテゴリーフィルター
+            document.querySelectorAll('.category-filter').forEach(button => {
+                button.addEventListener('click', function() {
+                    // アクティブ状態の更新
+                    document.querySelectorAll('.category-filter').forEach(btn => {
+                        btn.classList.remove('bg-blue-500', 'text-white');
+                        btn.classList.add('bg-gray-200', 'text-gray-700');
+                    });
+                    
+                    this.classList.remove('bg-gray-200', 'text-gray-700');
+                    this.classList.add('bg-blue-500', 'text-white');
+                    
+                    // カテゴリー更新
+                    currentCategory = this.dataset.category;
+                    loadSurveys();
+                });
+            });
+        }
+
+        function logout() {
+            window.authManager.logout();
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

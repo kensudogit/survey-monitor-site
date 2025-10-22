@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規登録 - Survey Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-gray-900">Survey Monitor</a>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="/" class="text-gray-700 hover:text-blue-600 font-medium">ホーム</a>
+                    <a href="/surveys" class="text-gray-700 hover:text-blue-600 font-medium">アンケート一覧</a>
+                    <a href="/dashboard" class="text-gray-700 hover:text-blue-600 font-medium">ダッシュボード</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <a href="/login" class="text-gray-700 hover:text-blue-600 font-medium">ログイン</a>
+                    <a href="/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">新規登録</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Register Form -->
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div>
+                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                    新規アカウント作成
+                </h2>
+                <p class="mt-2 text-center text-sm text-gray-600">
+                    または
+                    <a href="/login" class="font-medium text-blue-600 hover:text-blue-500">
+                        既存のアカウントでログイン
+                    </a>
+                </p>
+            </div>
+            <form class="mt-8 space-y-6" id="registerForm">
+                <div class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">お名前</label>
+                        <input id="name" name="name" type="text" autocomplete="name" required 
+                               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                               placeholder="山田太郎">
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">メールアドレス</label>
+                        <input id="email" name="email" type="email" autocomplete="email" required 
+                               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                               placeholder="example@email.com">
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">パスワード</label>
+                        <input id="password" name="password" type="password" autocomplete="new-password" required 
+                               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                               placeholder="8文字以上のパスワード">
+                    </div>
+                    
+                    <div>
+                        <label for="password-confirm" class="block text-sm font-medium text-gray-700">パスワード（確認）</label>
+                        <input id="password-confirm" name="password-confirm" type="password" autocomplete="new-password" required 
+                               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                               placeholder="パスワードを再入力">
+                    </div>
+                    
+                    <div>
+                        <label for="age" class="block text-sm font-medium text-gray-700">年齢</label>
+                        <select id="age" name="age" required 
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <option value="">選択してください</option>
+                            <option value="18-24">18-24歳</option>
+                            <option value="25-34">25-34歳</option>
+                            <option value="35-44">35-44歳</option>
+                            <option value="45-54">45-54歳</option>
+                            <option value="55-64">55-64歳</option>
+                            <option value="65+">65歳以上</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="gender" class="block text-sm font-medium text-gray-700">性別</label>
+                        <select id="gender" name="gender" required 
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <option value="">選択してください</option>
+                            <option value="male">男性</option>
+                            <option value="female">女性</option>
+                            <option value="other">その他</option>
+                            <option value="no-answer">回答しない</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <input id="terms" name="terms" type="checkbox" required 
+                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="terms" class="ml-2 block text-sm text-gray-900">
+                        <a href="#" class="text-blue-600 hover:text-blue-500">利用規約</a>と
+                        <a href="#" class="text-blue-600 hover:text-blue-500">プライバシーポリシー</a>に同意します
+                    </label>
+                </div>
+
+                <div>
+                    <button type="submit" 
+                            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <i class="fas fa-user-plus text-blue-500 group-hover:text-blue-400"></i>
+                        </span>
+                        アカウントを作成
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 Survey Monitor. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('password-confirm').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const terms = document.getElementById('terms').checked;
+            
+            // バリデーション
+            if (!name || !email || !password || !passwordConfirm || !age || !gender) {
+                alert('すべての項目を入力してください。');
+                return;
+            }
+            
+            if (password !== passwordConfirm) {
+                alert('パスワードが一致しません。');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('パスワードは8文字以上で入力してください。');
+                return;
+            }
+            
+            if (!terms) {
+                alert('利用規約に同意してください。');
+                return;
+            }
+            
+            // 登録処理（デモ）
+            alert('アカウントが作成されました！ログインしてください。');
+            window.location.href = '/login';
+        });
+    </script>
+</body>
+</html>

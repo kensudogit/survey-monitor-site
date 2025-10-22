@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン - Survey Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .floating-animation {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.8s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .bg-pattern {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-pattern min-h-screen">
+    <!-- Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-20 h-20 bg-blue-400 rounded-full opacity-20 floating-animation"></div>
+        <div class="absolute top-40 right-20 w-32 h-32 bg-purple-400 rounded-full opacity-20 floating-animation" style="animation-delay: -2s;"></div>
+        <div class="absolute bottom-20 left-1/4 w-16 h-16 bg-pink-400 rounded-full opacity-20 floating-animation" style="animation-delay: -4s;"></div>
+        <div class="absolute bottom-40 right-1/3 w-24 h-24 bg-indigo-400 rounded-full opacity-20 floating-animation" style="animation-delay: -1s;"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-effect backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-white hover:text-blue-200 transition-colors">
+                        <i class="fas fa-chart-line mr-2"></i>Survey Monitor
+                    </a>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="/" class="text-white hover:text-blue-200 font-medium transition-colors">ホーム</a>
+                    <a href="/surveys" class="text-white hover:text-blue-200 font-medium transition-colors">アンケート一覧</a>
+                    <a href="/dashboard" class="text-white hover:text-blue-200 font-medium transition-colors">ダッシュボード</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <a href="/login" class="text-white font-medium hover:text-blue-200 transition-colors">ログイン</a>
+                    <a href="/register" class="bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-all hover-lift font-semibold">新規登録</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Form -->
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-md w-full space-y-8 slide-in">
+            <!-- Welcome Card -->
+            <div class="glass-effect backdrop-blur-md rounded-2xl p-8 hover-lift">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 pulse-animation">
+                        <i class="fas fa-user text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-2">
+                        おかえりなさい！
+                    </h2>
+                    <p class="text-blue-100">
+                        アカウントにログインしてポイントを獲得しましょう
+                    </p>
+                </div>
+                <form class="space-y-6" id="loginForm">
+                    <div class="space-y-4">
+                        <div class="relative">
+                            <label for="email" class="block text-sm font-medium text-white mb-2">
+                                <i class="fas fa-envelope mr-2"></i>メールアドレス
+                            </label>
+                            <input id="email" name="email" type="email" autocomplete="email" required 
+                                   class="w-full px-4 py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all" 
+                                   placeholder="example@email.com">
+                        </div>
+                        <div class="relative">
+                            <label for="password" class="block text-sm font-medium text-white mb-2">
+                                <i class="fas fa-lock mr-2"></i>パスワード
+                            </label>
+                            <input id="password" name="password" type="password" autocomplete="current-password" required 
+                                   class="w-full px-4 py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all" 
+                                   placeholder="パスワードを入力">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember-me" name="remember-me" type="checkbox" 
+                                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-white/30 rounded bg-white/20">
+                            <label for="remember-me" class="ml-2 block text-sm text-white">
+                                ログイン状態を保持
+                            </label>
+                        </div>
+
+                        <div class="text-sm">
+                            <a href="#" class="font-medium text-blue-200 hover:text-white transition-colors">
+                                パスワードを忘れた場合
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" 
+                                class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all hover-lift neon-glow">
+                            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                                <i class="fas fa-sign-in-alt text-white group-hover:text-blue-200"></i>
+                            </span>
+                            ログイン
+                        </button>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="text-sm text-blue-100">
+                            デモアカウントでログイン:
+                            <button type="button" onclick="loginDemo()" 
+                                    class="font-medium text-white hover:text-blue-200 ml-1 transition-colors">
+                                デモユーザー
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center pt-4 border-t border-white/20">
+                        <p class="text-blue-100">
+                            アカウントをお持ちでない方は
+                            <a href="/register" class="font-medium text-white hover:text-blue-200 transition-colors">
+                                新規登録
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 Survey Monitor. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // 簡単なバリデーション
+            if (!email || !password) {
+                alert('メールアドレスとパスワードを入力してください。');
+                return;
+            }
+            
+            // ログイン処理（デモ）
+            if (email === 'demo@example.com' && password === 'demo123') {
+                alert('ログイン成功！ダッシュボードに移動します。');
+                window.location.href = '/dashboard';
+            } else {
+                alert('メールアドレスまたはパスワードが正しくありません。');
+            }
+        });
+        
+        function loginDemo() {
+            document.getElementById('email').value = 'demo@example.com';
+            document.getElementById('password').value = 'demo123';
+        }
+    </script>
+</body>
+</html>

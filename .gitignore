@@ -89,3 +89,4 @@ composer.phar
 # Temporary files
 tmp/
 temp/
+.vercel

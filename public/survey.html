@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アンケート回答 - Survey Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question-card {
+            transition: all 0.3s ease;
+        }
+        
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        
+        .rating-star {
+            transition: all 0.2s ease;
+        }
+        
+        .rating-star:hover {
+            transform: scale(1.2);
+        }
+        
+        .rating-star.active {
+            color: #fbbf24;
+            transform: scale(1.1);
+        }
+        
+        .option-button {
+            transition: all 0.3s ease;
+        }
+        
+        .option-button:hover {
+            transform: translateX(5px);
+        }
+        
+        .option-button.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-white hover:text-blue-200 transition-colors">
+                        <i class="fas fa-chart-line mr-2"></i>Survey Monitor
+                    </a>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="/" class="text-white hover:text-blue-200 font-medium transition-colors">ホーム</a>
+                    <a href="/surveys.html" class="text-white hover:text-blue-200 font-medium transition-colors">アンケート一覧</a>
+                    <a href="/dashboard.html" class="text-white hover:text-blue-200 font-medium transition-colors">ダッシュボード</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <div class="user-info hidden">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-user-circle text-white"></i>
+                            <span class="text-white" id="userName">ユーザー名</span>
+                            <span class="text-blue-200" id="userPoints">(0pt)</span>
+                        </div>
+                    </div>
+                    <button class="logout-btn hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors" onclick="logout()">
+                        ログアウト
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Survey Header -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8" id="surveyHeader">
+            <!-- Survey info will be loaded here -->
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">進捗状況</h3>
+                <span class="text-sm text-gray-600" id="progressText">0 / 0</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3">
+                <div class="progress-bar bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Questions Container -->
+        <div id="questionsContainer">
+            <!-- Questions will be loaded here -->
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between items-center mt-8">
+            <button id="prevBtn" onclick="previousQuestion()" 
+                    class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed" 
+                    disabled>
+                <i class="fas fa-arrow-left mr-2"></i>前の質問
+            </button>
+            
+            <div class="flex space-x-4">
+                <button id="saveBtn" onclick="saveProgress()" 
+                        class="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors font-semibold">
+                    <i class="fas fa-save mr-2"></i>一時保存
+                </button>
+                
+                <button id="nextBtn" onclick="nextQuestion()" 
+                        class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                    次の質問<i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                
+                <button id="submitBtn" onclick="submitSurvey()" 
+                        class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold hidden">
+                    <i class="fas fa-check mr-2"></i>回答完了
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 Survey Monitor. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/survey.js"></script>
+    <script>
+        let currentSurvey = null;
+        let currentQuestionIndex = 0;
+        let responses = {};
+        let startTime = null;
+
+        // ページ読み込み時の初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSurvey();
+        });
+
+        function initializeSurvey() {
+            // 認証チェック
+            if (!window.authManager.currentUser) {
+                alert('ログインが必要です');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // URLからアンケートIDを取得
+            const urlParams = new URLSearchParams(window.location.search);
+            const surveyId = urlParams.get('id');
+
+            if (!surveyId) {
+                alert('アンケートが見つかりません');
+                window.location.href = '/surveys.html';
+                return;
+            }
+
+            // アンケートデータを取得
+            currentSurvey = window.surveyManager.getSurvey(surveyId);
+            if (!currentSurvey) {
+                alert('アンケートが見つかりません');
+                window.location.href = '/surveys.html';
+                return;
+            }
+
+            // 既に回答済みかチェック
+            const completedSurveys = window.surveyManager.getUserCompletedSurveys(window.authManager.currentUser.id);
+            if (completedSurveys.some(response => response.surveyId === surveyId)) {
+                alert('このアンケートは既に回答済みです');
+                window.location.href = '/surveys.html';
+                return;
+            }
+
+            // UI更新
+            window.authManager.updateUI();
+            updateUserInfo();
+            
+            // アンケート開始
+            startTime = new Date();
+            loadSurveyHeader();
+            loadQuestion();
+            updateProgress();
+        }
+
+        function updateUserInfo() {
+            const user = window.authManager.currentUser;
+            if (user) {
+                document.getElementById('userName').textContent = user.name;
+                document.getElementById('userPoints').textContent = `(${user.points}pt)`;
+            }
+        }
+
+        function loadSurveyHeader() {
+            const header = document.getElementById('surveyHeader');
+            header.innerHTML = `
+                <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 mr-3">
+                                ${currentSurvey.category}
+                            </span>
+                            <span class="text-sm text-gray-600">
+                                <i class="fas fa-clock mr-1"></i>${currentSurvey.estimatedTime}分
+                            </span>
+                            <span class="text-sm text-gray-600 ml-4">
+                                <i class="fas fa-question-circle mr-1"></i>${currentSurvey.questions.length}問
+                            </span>
+                        </div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-4">${currentSurvey.title}</h1>
+                        <p class="text-lg text-gray-600 mb-4">${currentSurvey.description}</p>
+                        <div class="flex items-center">
+                            <span class="text-2xl font-bold text-green-600 mr-2">${currentSurvey.points}pt</span>
+                            <span class="text-gray-600">獲得予定ポイント</span>
+                        </div>
+                    </div>
+                    <img src="${currentSurvey.image}" alt="${currentSurvey.title}" class="w-32 h-32 object-cover rounded-lg ml-6">
+                </div>
+            `;
+        }
+
+        function loadQuestion() {
+            const container = document.getElementById('questionsContainer');
+            const question = currentSurvey.questions[currentQuestionIndex];
+            
+            if (!question) return;
+
+            container.innerHTML = `
+                <div class="question-card bg-white rounded-xl shadow-lg p-8">
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900">質問 ${currentQuestionIndex + 1}</h3>
+                            <span class="text-sm text-gray-500">${currentQuestionIndex + 1} / ${currentSurvey.questions.length}</span>
+                        </div>
+                        <p class="text-lg text-gray-700">${question.question}</p>
+                    </div>
+                    
+                    <div class="question-content">
+                        ${renderQuestionContent(question)}
+                    </div>
+                </div>
+            `;
+
+            // 既存の回答を復元
+            if (responses[question.id]) {
+                restoreAnswer(question, responses[question.id]);
+            }
+        }
+
+        function renderQuestionContent(question) {
+            switch (question.type) {
+                case 'single':
+                    return `
+                        <div class="space-y-3">
+                            ${question.options.map((option, index) => `
+                                <button class="option-button w-full text-left p-4 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors" 
+                                        onclick="selectSingleOption('${question.id}', '${option}')">
+                                    <div class="flex items-center">
+                                        <div class="w-4 h-4 border-2 border-gray-300 rounded-full mr-3 option-radio"></div>
+                                        <span>${option}</span>
+                                    </div>
+                                </button>
+                            `).join('')}
+                        </div>
+                    `;
+                
+                case 'multiple':
+                    return `
+                        <div class="space-y-3">
+                            ${question.options.map((option, index) => `
+                                <button class="option-button w-full text-left p-4 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors" 
+                                        onclick="toggleMultipleOption('${question.id}', '${option}')">
+                                    <div class="flex items-center">
+                                        <div class="w-4 h-4 border-2 border-gray-300 rounded mr-3 option-checkbox"></div>
+                                        <span>${option}</span>
+                                    </div>
+                                </button>
+                            `).join('')}
+                        </div>
+                    `;
+                
+                case 'rating':
+                    return `
+                        <div class="text-center">
+                            <div class="flex justify-center space-x-2 mb-4">
+                                ${Array.from({length: question.scale}, (_, i) => `
+                                    <button class="rating-star text-4xl text-gray-300 hover:text-yellow-400" 
+                                            onclick="setRating('${question.id}', ${i + 1})" 
+                                            data-rating="${i + 1}">
+                                        ★
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-500">
+                                <span>1 (最低)</span>
+                                <span>${question.scale} (最高)</span>
+                            </div>
+                        </div>
+                    `;
+                
+                case 'text':
+                    return `
+                        <textarea class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none" 
+                                  rows="4" 
+                                  placeholder="回答を入力してください..."
+                                  onchange="setTextAnswer('${question.id}', this.value)"></textarea>
+                    `;
+                
+                default:
+                    return '<p class="text-gray-500">未対応の質問タイプです</p>';
+            }
+        }
+
+        function selectSingleOption(questionId, option) {
+            // 既存の選択をクリア
+            document.querySelectorAll(`[onclick*="${questionId}"] .option-radio`).forEach(radio => {
+                radio.classList.remove('bg-blue-500', 'border-blue-500');
+                radio.classList.add('border-gray-300');
+            });
+
+            // 新しい選択を設定
+            const selectedButton = event.currentTarget;
+            const radio = selectedButton.querySelector('.option-radio');
+            radio.classList.remove('border-gray-300');
+            radio.classList.add('bg-blue-500', 'border-blue-500');
+            selectedButton.classList.add('selected');
+
+            responses[questionId] = option;
+        }
+
+        function toggleMultipleOption(questionId, option) {
+            const button = event.currentTarget;
+            const checkbox = button.querySelector('.option-checkbox');
+            
+            if (!responses[questionId]) {
+                responses[questionId] = [];
+            }
+
+            const index = responses[questionId].indexOf(option);
+            if (index > -1) {
+                responses[questionId].splice(index, 1);
+                checkbox.classList.remove('bg-blue-500', 'border-blue-500');
+                checkbox.classList.add('border-gray-300');
+                button.classList.remove('selected');
+            } else {
+                responses[questionId].push(option);
+                checkbox.classList.remove('border-gray-300');
+                checkbox.classList.add('bg-blue-500', 'border-blue-500');
+                button.classList.add('selected');
+            }
+        }
+
+        function setRating(questionId, rating) {
+            // 既存の選択をクリア
+            document.querySelectorAll(`[data-rating]`).forEach(star => {
+                star.classList.remove('active');
+            });
+
+            // 新しい評価を設定
+            for (let i = 1; i <= rating; i++) {
+                const star = document.querySelector(`[data-rating="${i}"]`);
+                star.classList.add('active');
+            }
+
+            responses[questionId] = rating;
+        }
+
+        function setTextAnswer(questionId, value) {
+            responses[questionId] = value;
+        }
+
+        function restoreAnswer(question, answer) {
+            switch (question.type) {
+                case 'single':
+                    const singleButton = document.querySelector(`[onclick*="${question.id}"][onclick*="${answer}"]`);
+                    if (singleButton) {
+                        singleButton.click();
+                    }
+                    break;
+                
+                case 'multiple':
+                    answer.forEach(option => {
+                        const multiButton = document.querySelector(`[onclick*="${question.id}"][onclick*="${option}"]`);
+                        if (multiButton) {
+                            multiButton.click();
+                        }
+                    });
+                    break;
+                
+                case 'rating':
+                    for (let i = 1; i <= answer; i++) {
+                        const star = document.querySelector(`[data-rating="${i}"]`);
+                        star.classList.add('active');
+                    }
+                    break;
+                
+                case 'text':
+                    const textarea = document.querySelector('textarea');
+                    if (textarea) {
+                        textarea.value = answer;
+                    }
+                    break;
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / currentSurvey.questions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `${currentQuestionIndex + 1} / ${currentSurvey.questions.length}`;
+
+            // ボタンの状態更新
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            
+            if (currentQuestionIndex === currentSurvey.questions.length - 1) {
+                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('submitBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('nextBtn').classList.remove('hidden');
+                document.getElementById('submitBtn').classList.add('hidden');
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentSurvey.questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+                updateProgress();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+                updateProgress();
+            }
+        }
+
+        function saveProgress() {
+            localStorage.setItem(`survey_progress_${currentSurvey.id}`, JSON.stringify({
+                responses: responses,
+                currentQuestionIndex: currentQuestionIndex,
+                timestamp: new Date().toISOString()
+            }));
+            alert('進捗を保存しました');
+        }
+
+        function submitSurvey() {
+            // 必須回答チェック
+            const unansweredQuestions = currentSurvey.questions.filter(q => !responses[q.id] || 
+                (Array.isArray(responses[q.id]) && responses[q.id].length === 0));
+            
+            if (unansweredQuestions.length > 0) {
+                alert(`${unansweredQuestions.length}個の質問に回答していません`);
+                return;
+            }
+
+            // 回答時間計算
+            const endTime = new Date();
+            const timeSpent = Math.round((endTime - startTime) / 1000 / 60); // 分
+
+            // 回答を保存
+            const responseData = window.surveyManager.saveResponse(currentSurvey.id, responses);
+            
+            // 進捗データをクリア
+            localStorage.removeItem(`survey_progress_${currentSurvey.id}`);
+
+            // 完了画面に遷移
+            alert(`アンケート完了！\n${currentSurvey.points}ポイントを獲得しました！\n回答時間: ${timeSpent}分`);
+            window.location.href = '/surveys.html';
+        }
+
+        function logout() {
+            window.authManager.logout();
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
