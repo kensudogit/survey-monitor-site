@@ -5,9 +5,13 @@
   "main": "index.html",
   "scripts": {
     "build": "echo 'Static site - no build needed'",
-    "start": "echo 'Static site - no start needed'"
+    "start": "echo 'Static site - no start needed'",
+    "dev": "echo 'Static site - no dev server needed'"
   },
-  "keywords": ["survey", "monitor", "static"],
+  "keywords": ["survey", "monitor", "static", "vercel"],
   "author": "Survey Monitor Team",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
