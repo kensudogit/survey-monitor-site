@@ -14,14 +14,18 @@
   ],
   "env": {
     "APP_ENV": "production",
-    "APP_DEBUG": "false"
+    "APP_DEBUG": "false",
+    "APP_URL": "https://survey-monitor-site.vercel.app"
   },
   "functions": {
     "app/Http/Controllers/**/*.php": {
       "runtime": "@vercel/php"
     }
   },
-  "installCommand": "composer install --no-dev --optimize-autoloader",
-  "buildCommand": "echo 'Build completed'",
-  "outputDirectory": "public"
+  "installCommand": "composer install --no-dev --optimize-autoloader --no-interaction",
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
+  "framework": null,
+  "regions": ["nrt1"],
+  "public": true
 }

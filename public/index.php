@@ -28,6 +28,10 @@ if (getenv('VERCEL')) {
     if (!getenv('APP_KEY')) {
         $_ENV['APP_KEY'] = 'base64:' . base64_encode(random_bytes(32));
     }
+    
+    // ログ設定
+    $_ENV['LOG_CHANNEL'] = 'stack';
+    $_ENV['LOG_LEVEL'] = 'error';
 }
 
 // Laravelアプリケーションの起動
