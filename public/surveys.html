@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>アンケート一覧 - Survey Monitor</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind CSS CDN警告を抑制
+        if (typeof window !== 'undefined') {
+            const originalWarn = console.warn;
+            console.warn = function(message) {
+                if (typeof message === 'string' && message.includes('cdn.tailwindcss.com should not be used in production')) {
+                    return; // この警告を無視
+                }
+                originalWarn.apply(console, arguments);
+            };
+        }
+    </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -192,6 +204,7 @@
         // ページ読み込み時の初期化
         document.addEventListener('DOMContentLoaded', function() {
             initializePage();
+            setupCategoryClickListeners();
         });
 
         function initializePage() {
@@ -328,7 +341,27 @@
             document.getElementById('healthcareCount').textContent = `${counts.ヘルスケア}件`;
         }
 
-        // カテゴリーボタンはリンクとして動作するため、イベントリスナーは不要
+        // カテゴリーボタンのクリックイベントを設定
+        function setupCategoryClickListeners() {
+            const categoryCards = document.querySelectorAll('.category-card');
+            console.log('Found category cards:', categoryCards.length);
+            
+            categoryCards.forEach((card, index) => {
+                console.log(`Setting up listener for card ${index}:`, card.href);
+                
+                card.addEventListener('click', function(e) {
+                    console.log('Category card clicked:', this.href);
+                    console.log('Category card text:', this.textContent.trim());
+                    
+                    // リンクの動作を確認
+                    const href = this.getAttribute('href');
+                    console.log('Navigating to:', href);
+                    
+                    // デフォルトのリンク動作を許可
+                    // 必要に応じてここで追加の処理を行う
+                });
+            });
+        }
 
         function logout() {
             window.authManager.logout();
