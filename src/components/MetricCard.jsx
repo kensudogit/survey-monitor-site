@@ -105,7 +105,7 @@ const MetricCard = ({
 export const SurveyMetricCard = ({ survey, analytics, loading }) => (
   <MetricCard
     title="総アンケート数"
-    value={analytics?.total_surveys || 0}
+    value={analytics?.totalSurveys || analytics?.total_surveys || 0}
     change="+12%"
     changeType="positive"
     icon={<i className="fas fa-chart-line" />}
@@ -118,7 +118,7 @@ export const SurveyMetricCard = ({ survey, analytics, loading }) => (
 export const ResponseMetricCard = ({ analytics, loading }) => (
   <MetricCard
     title="総回答数"
-    value={analytics?.total_responses || 0}
+    value={analytics?.totalResponses || analytics?.total_responses || 0}
     change="+8%"
     changeType="positive"
     icon={<i className="fas fa-check-circle" />}
@@ -131,7 +131,7 @@ export const ResponseMetricCard = ({ analytics, loading }) => (
 export const CompletionMetricCard = ({ analytics, loading }) => (
   <MetricCard
     title="平均完了率"
-    value={`${analytics?.average_completion_rate?.toFixed(1) || 0}%`}
+    value={`${analytics?.averageCompletionRate || analytics?.average_completion_rate || 0}%`}
     change="-2%"
     changeType="negative"
     icon={<i className="fas fa-percentage" />}
@@ -144,7 +144,7 @@ export const CompletionMetricCard = ({ analytics, loading }) => (
 export const QualityMetricCard = ({ analytics, loading }) => (
   <MetricCard
     title="平均品質スコア"
-    value={analytics?.average_response_quality?.toFixed(1) || 0}
+    value={analytics?.averageQualityScore || analytics?.average_response_quality || 0}
     change="+5%"
     changeType="positive"
     icon={<i className="fas fa-star" />}

@@ -9,6 +9,7 @@ import Surveys from './pages/Surveys';
 import Category from './pages/Category';
 import Dashboard from './pages/Dashboard';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
+import DomoAIDashboard from './pages/DomoAIDashboard';
 import Survey from './pages/Survey';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -30,9 +31,10 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/surveys" element={<Surveys />} />
                 <Route path="/category/:category" element={<Category />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/analytics" element={<AnalyticsDashboard />} />
-                <Route path="/survey/:id" element={<Survey />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/analytics" element={<AnalyticsDashboard />} />
+                    <Route path="/domo-ai" element={<DomoAIDashboard />} />
+                    <Route path="/survey/:id" element={<Survey />} />
               </Routes>
             </main>
             <Footer />

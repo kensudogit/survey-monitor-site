@@ -1,30 +1,63 @@
 import React, { useEffect, useRef } from 'react';
 
 // Modern Chart Component with CSS animations
-const ModernChart = ({ type, data, title, height = 300, className = '' }) => {
+const ModernChart = ({ type, data, title, height = 300, className = '', options = {} }) => {
   const chartRef = useRef(null);
+
+  // データ検証とフォールバック
+  const validateData = (data) => {
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    
+    return data.map(item => {
+      if (typeof item === 'number') {
+        return { value: item, label: `Item ${item}` };
+      }
+      if (typeof item === 'object' && item !== null) {
+        return {
+          value: typeof item.value === 'number' && !isNaN(item.value) ? item.value : 0,
+          label: item.label || item.name || 'Unknown'
+        };
+      }
+      return { value: 0, label: 'Invalid' };
+    }).filter(item => item.value >= 0);
+  };
+
+  const validatedData = validateData(data);
 
   useEffect(() => {
     // Simulate chart rendering with CSS animations
     if (chartRef.current) {
       chartRef.current.classList.add('fade-in');
     }
-  }, [data]);
+  }, [validatedData]);
 
   const renderChart = () => {
+    if (validatedData.length === 0) {
+      return (
+        <div className="flex items-center justify-center h-full text-gray-500">
+          <div className="text-center">
+            <i className="fas fa-chart-bar text-4xl mb-2"></i>
+            <p>データがありません</p>
+          </div>
+        </div>
+      );
+    }
+
     switch (type) {
       case 'line':
-        return <LineChart data={data} height={height} />;
+        return <LineChart data={validatedData} height={height} />;
       case 'bar':
-        return <BarChart data={data} height={height} />;
+        return <BarChart data={validatedData} height={height} />;
       case 'pie':
-        return <PieChart data={data} height={height} />;
+        return <PieChart data={validatedData} height={height} />;
       case 'area':
-        return <AreaChart data={data} height={height} />;
+        return <AreaChart data={validatedData} height={height} />;
       case 'donut':
-        return <DonutChart data={data} height={height} />;
+        return <DonutChart data={validatedData} height={height} />;
       default:
-        return <LineChart data={data} height={height} />;
+        return <LineChart data={validatedData} height={height} />;
     }
   };
 
@@ -48,9 +81,32 @@ const ModernChart = ({ type, data, title, height = 300, className = '' }) => {
 
 // Line Chart Component
 const LineChart = ({ data, height }) => {
-  const maxValue = Math.max(...data.map(d => d.value));
-  const minValue = Math.min(...data.map(d => d.value));
-  const range = maxValue - minValue;
+  if (!data || data.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="text-center">
+          <i className="fas fa-chart-line text-4xl mb-2"></i>
+          <p>データがありません</p>
+        </div>
+      </div>
+    );
+  }
+
+  const values = data.map(d => d.value).filter(v => typeof v === 'number' && !isNaN(v));
+  if (values.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="text-center">
+          <i className="fas fa-exclamation-triangle text-4xl mb-2"></i>
+          <p>有効なデータがありません</p>
+        </div>
+      </div>
+    );
+  }
+
+  const maxValue = Math.max(...values);
+  const minValue = Math.min(...values);
+  const range = maxValue === minValue ? 1 : maxValue - minValue;
 
   return (
     <div className="relative w-full h-full">
@@ -71,7 +127,7 @@ const LineChart = ({ data, height }) => {
           strokeLinecap="round"
           strokeLinejoin="round"
           points={data.map((d, i) => {
-            const x = (i / (data.length - 1)) * 100;
+            const x = data.length > 1 ? (i / (data.length - 1)) * 100 : 50;
             const y = 100 - ((d.value - minValue) / range) * 80;
             return `${x}%,${y}%`;
           }).join(' ')}
@@ -80,7 +136,7 @@ const LineChart = ({ data, height }) => {
         
         {/* Data Points */}
         {data.map((d, i) => {
-          const x = (i / (data.length - 1)) * 100;
+          const x = data.length > 1 ? (i / (data.length - 1)) * 100 : 50;
           const y = 100 - ((d.value - minValue) / range) * 80;
           return (
             <circle
@@ -120,12 +176,35 @@ const LineChart = ({ data, height }) => {
 
 // Bar Chart Component
 const BarChart = ({ data, height }) => {
-  const maxValue = Math.max(...data.map(d => d.value));
+  if (!data || data.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="text-center">
+          <i className="fas fa-chart-bar text-4xl mb-2"></i>
+          <p>データがありません</p>
+        </div>
+      </div>
+    );
+  }
+
+  const values = data.map(d => d.value).filter(v => typeof v === 'number' && !isNaN(v));
+  if (values.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="text-center">
+          <i className="fas fa-exclamation-triangle text-4xl mb-2"></i>
+          <p>有効なデータがありません</p>
+        </div>
+      </div>
+    );
+  }
+
+  const maxValue = Math.max(...values);
 
   return (
     <div className="relative w-full h-full flex items-end justify-between px-4">
       {data.map((d, i) => {
-        const barHeight = (d.value / maxValue) * 100;
+        const barHeight = maxValue > 0 ? (d.value / maxValue) * 100 : 0;
         return (
           <div key={i} className="flex flex-col items-center space-y-2">
             <div
@@ -146,7 +225,30 @@ const BarChart = ({ data, height }) => {
 
 // Pie Chart Component
 const PieChart = ({ data, height }) => {
-  const total = data.reduce((sum, d) => sum + d.value, 0);
+  if (!data || data.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="text-center">
+          <i className="fas fa-chart-pie text-4xl mb-2"></i>
+          <p>データがありません</p>
+        </div>
+      </div>
+    );
+  }
+
+  const validData = data.filter(d => typeof d.value === 'number' && !isNaN(d.value) && d.value > 0);
+  if (validData.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="text-center">
+          <i className="fas fa-exclamation-triangle text-4xl mb-2"></i>
+          <p>有効なデータがありません</p>
+        </div>
+      </div>
+    );
+  }
+
+  const total = validData.reduce((sum, d) => sum + d.value, 0);
   let cumulativePercentage = 0;
 
   const colors = [
@@ -204,7 +306,7 @@ const PieChart = ({ data, height }) => {
       
       {/* Legend */}
       <div className="absolute right-0 top-0 space-y-2">
-        {data.map((d, i) => (
+        {validData.map((d, i) => (
           <div key={i} className="flex items-center space-x-2">
             <div 
               className="w-3 h-3 rounded-full"

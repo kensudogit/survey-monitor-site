@@ -59,14 +59,22 @@ const Header = () => {
                   <i className="fas fa-tachometer-alt mr-2 group-hover:scale-110 transition-transform motion-safe" aria-hidden="true"></i>
                   ダッシュボード
                 </Link>
-                <Link 
-                  to="/analytics" 
-                  className="text-white hover:text-blue-200 font-medium transition-colors flex items-center group forced-colors-link motion-safe"
-                  aria-current={window.location.pathname === '/analytics' ? 'page' : undefined}
-                >
-                  <i className="fas fa-brain mr-2 group-hover:scale-110 transition-transform motion-safe" aria-hidden="true"></i>
-                  AI分析
-                </Link>
+                    <Link 
+                      to="/analytics" 
+                      className="text-white hover:text-blue-200 font-medium transition-colors flex items-center group forced-colors-link motion-safe"
+                      aria-current={window.location.pathname === '/analytics' ? 'page' : undefined}
+                    >
+                      <i className="fas fa-brain mr-2 group-hover:scale-110 transition-transform motion-safe" aria-hidden="true"></i>
+                      AI分析
+                    </Link>
+                    <Link 
+                      to="/domo-ai" 
+                      className="text-white hover:text-blue-200 font-medium transition-colors flex items-center group forced-colors-link motion-safe"
+                      aria-current={window.location.pathname === '/domo-ai' ? 'page' : undefined}
+                    >
+                      <i className="fas fa-chart-line mr-2 group-hover:scale-110 transition-transform motion-safe" aria-hidden="true"></i>
+                      Domo.AI
+                    </Link>
               </>
             )}
           </nav>
