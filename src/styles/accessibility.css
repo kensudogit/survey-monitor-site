@@ -1,0 +1,291 @@
+/* Modern Accessibility Support - Microsoft Edge Compatible */
+
+/* Forced Colors Mode Support (代替 -ms-high-contrast) */
+@media (forced-colors: active) {
+  :root {
+    /* システムカラーを使用 */
+    --bg-color: Canvas;
+    --text-color: CanvasText;
+    --link-color: LinkText;
+    --visited-color: VisitedText;
+    --active-color: ActiveText;
+    --button-bg: ButtonFace;
+    --button-text: ButtonText;
+    --field-bg: Field;
+    --field-text: FieldText;
+    --highlight-bg: Highlight;
+    --highlight-text: HighlightText;
+    --gray-text: GrayText;
+  }
+
+  /* 基本要素の強制カラー対応 */
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  /* リンクの強制カラー対応 */
+  a {
+    color: var(--link-color);
+  }
+
+  a:visited {
+    color: var(--visited-color);
+  }
+
+  a:active {
+    color: var(--active-color);
+  }
+
+  /* ボタンの強制カラー対応 */
+  button, .btn-primary, .btn-secondary {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-text);
+  }
+
+  /* フォーム要素の強制カラー対応 */
+  input, textarea, select {
+    background-color: var(--field-bg);
+    color: var(--field-text);
+    border: 1px solid var(--field-text);
+  }
+
+  /* ハイライト要素の強制カラー対応 */
+  .highlight, .metric-value, .insight-card {
+    background-color: var(--highlight-bg);
+    color: var(--highlight-text);
+  }
+
+  /* グレーテキストの強制カラー対応 */
+  .text-gray-500, .text-gray-600, .subtitle {
+    color: var(--gray-text);
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-width: 2px;
+    --border-style: solid;
+  }
+
+  /* 高コントラスト時の境界線強化 */
+  .metric-card, .insight-card, .chart-container {
+    border-width: var(--border-width);
+    border-style: var(--border-style);
+  }
+
+  /* ボタンの高コントラスト対応 */
+  button, .btn-primary, .btn-secondary {
+    border-width: var(--border-width);
+    border-style: var(--border-style);
+  }
+
+  /* フォーカス表示の強化 */
+  *:focus {
+    outline: 3px solid;
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* アニメーションを無効化 */
+  .animate-spin,
+  .animate-pulse,
+  .animate-bounce,
+  .fade-in,
+  .slide-in-left,
+  .slide-in-right {
+    animation: none !important;
+  }
+
+  /* トランジションを無効化 */
+  .transition-all,
+  .transition-colors,
+  .transition-transform {
+    transition: none !important;
+  }
+}
+
+/* Color Scheme Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --border-color: #334155;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-color: #e2e8f0;
+  }
+}
+
+/* Focus Management */
+.focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Skip Links for Screen Readers */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Screen Reader Only Content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ARIA Live Regions */
+.live-region {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Third-party Cookie Alternatives */
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.cookie-consent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cookie-text {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.cookie-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cookie-accept,
+.cookie-decline {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: 0.375rem;
+}
+
+.cookie-accept {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Local Storage Fallback */
+.local-storage-fallback {
+  display: none;
+}
+
+.no-local-storage .local-storage-fallback {
+  display: block;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .metric-card,
+  .insight-card {
+    border: 1px solid #000 !important;
+    break-inside: avoid;
+  }
+}
+
+/* Modern CSS Grid Fallbacks */
+.grid-responsive {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+@supports not (display: grid) {
+  .grid-responsive {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .grid-responsive > * {
+    flex: 1 1 300px;
+    margin: 0.5rem;
+  }
+}
+
+/* Container Queries Support */
+@supports (container-type: inline-size) {
+  .container-responsive {
+    container-type: inline-size;
+  }
+
+  @container (min-width: 400px) {
+    .metric-card {
+      padding: 2rem;
+    }
+  }
+}
