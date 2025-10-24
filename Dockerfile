@@ -38,7 +38,14 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 WORKDIR /var/www/html
 
 # Copy composer files
-COPY composer.json ./
+COPY composer.json composer.lock* ./
+
+# Copy Laravel core files first
+COPY artisan ./
+COPY bootstrap/ ./bootstrap/
+COPY app/ ./app/
+COPY config/ ./config/
+COPY routes/ ./routes/
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction

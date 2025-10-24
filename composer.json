@@ -1,5 +1,5 @@
 {
-    "name": "survey-monitor-site",
+    "name": "survey-monitor/survey-monitor-site",
     "type": "project",
     "description": "Modern Survey Monitor Site",
     "keywords": ["laravel", "survey", "monitor"],

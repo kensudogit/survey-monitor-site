@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: survey_monitor_php
+    container_name: survey_monitor_app
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:

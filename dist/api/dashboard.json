@@ -1,0 +1,277 @@
+{
+  "overview": {
+    "totalUsers": 5,
+    "totalSurveys": 5,
+    "totalResponses": 5,
+    "totalPoints": 6670,
+    "completionRate": 85.2,
+    "averageRating": 4.2
+  },
+  "recentSurveys": [
+    {
+      "id": 1,
+      "title": "スマートフォンアプリの使用状況調査",
+      "category_id": 1,
+      "current_responses": 342,
+      "status": "active",
+      "points": 100,
+      "description": "日常的なスマートフォンアプリの使用パターンと満足度について調査します",
+      "duration_minutes": 10,
+      "max_responses": 500,
+      "start_date": "2024-01-01T00:00:00Z",
+      "end_date": "2024-12-31T23:59:59Z",
+      "image_url": "/images/tech-survey.jpg",
+      "is_featured": true,
+      "created_by": 1,
+      "created_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "title": "オンラインショッピングの購買行動分析",
+      "category_id": 2,
+      "current_responses": 189,
+      "status": "active",
+      "points": 150,
+      "description": "ECサイトでの購買行動と決済方法の選択について調査します",
+      "duration_minutes": 15,
+      "max_responses": 300,
+      "start_date": "2024-01-15T00:00:00Z",
+      "end_date": "2024-12-31T23:59:59Z",
+      "image_url": "/images/shopping-survey.jpg",
+      "is_featured": false,
+      "created_by": 2,
+      "created_at": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "title": "リモートワークの効果と課題",
+      "category_id": 3,
+      "current_responses": 156,
+      "status": "active",
+      "points": 200,
+      "description": "テレワークの生産性とコミュニケーションについて調査します",
+      "duration_minutes": 20,
+      "max_responses": 200,
+      "start_date": "2024-02-01T00:00:00Z",
+      "end_date": "2024-12-31T23:59:59Z",
+      "image_url": "/images/business-survey.jpg",
+      "is_featured": true,
+      "created_by": 3,
+      "created_at": "2024-02-01T00:00:00Z"
+    },
+    {
+      "id": 4,
+      "title": "健康管理アプリの利用実態",
+      "category_id": 6,
+      "current_responses": 278,
+      "status": "active",
+      "points": 120,
+      "description": "フィットネス・健康管理アプリの使用状況と効果について調査します",
+      "duration_minutes": 12,
+      "max_responses": 400,
+      "start_date": "2024-02-15T00:00:00Z",
+      "end_date": "2024-12-31T23:59:59Z",
+      "image_url": "/images/health-survey.jpg",
+      "is_featured": false,
+      "created_by": 4,
+      "created_at": "2024-02-15T00:00:00Z"
+    },
+    {
+      "id": 5,
+      "title": "エンターテイメントコンテンツの消費動向",
+      "category_id": 5,
+      "current_responses": 445,
+      "status": "active",
+      "points": 80,
+      "description": "動画配信サービスやゲームの利用状況について調査します",
+      "duration_minutes": 8,
+      "max_responses": 600,
+      "start_date": "2024-03-01T00:00:00Z",
+      "end_date": "2024-12-31T23:59:59Z",
+      "image_url": "/images/entertainment-survey.jpg",
+      "is_featured": true,
+      "created_by": 5,
+      "created_at": "2024-03-01T00:00:00Z"
+    }
+  ],
+  "topCategories": [
+    {
+      "id": 1,
+      "name": "テクノロジー・IT",
+      "count": 1,
+      "color": "#3B82F6",
+      "icon": "fas fa-laptop-code"
+    },
+    {
+      "id": 2,
+      "name": "ショッピング・EC",
+      "count": 1,
+      "color": "#10B981",
+      "icon": "fas fa-shopping-cart"
+    },
+    {
+      "id": 3,
+      "name": "ビジネス・働き方",
+      "count": 1,
+      "color": "#8B5CF6",
+      "icon": "fas fa-briefcase"
+    },
+    {
+      "id": 5,
+      "name": "エンターテイメント",
+      "count": 1,
+      "color": "#F59E0B",
+      "icon": "fas fa-gamepad"
+    },
+    {
+      "id": 6,
+      "name": "ヘルスケア・医療",
+      "count": 1,
+      "color": "#EF4444",
+      "icon": "fas fa-heartbeat"
+    }
+  ],
+  "aiInsights": [
+    {
+      "id": 1,
+      "survey_id": 1,
+      "insight_type": "sentiment_analysis",
+      "title": "アプリ使用満足度の高い傾向",
+      "description": "3-5時間の使用時間層で最も高い満足度を示しており、適度な使用が満足度向上に寄与している可能性があります",
+      "confidence_score": 0.87,
+      "metadata": {
+        "analysis_method": "sentiment_analysis",
+        "key_findings": [
+          "使用時間と満足度に正の相関",
+          "SNSと動画アプリの満足度が高い",
+          "ゲームアプリは時間当たり満足度が低い"
+        ],
+        "recommendations": [
+          "使用時間の最適化を提案",
+          "高満足度アプリの特徴分析",
+          "ゲームアプリの改善点特定"
+        ]
+      },
+      "is_active": true,
+      "created_at": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "survey_id": 2,
+      "insight_type": "behavioral_pattern",
+      "title": "オンライン購入の決済方法選択パターン",
+      "description": "クレジットカードと電子マネーの併用が主流で、安全性と利便性の両方を重視する傾向が見られます",
+      "confidence_score": 0.92,
+      "metadata": {
+        "analysis_method": "behavioral_analysis",
+        "key_findings": [
+          "クレジットカード使用率78%",
+          "電子マネー併用率65%",
+          "銀行振込は高額購入時のみ"
+        ],
+        "recommendations": [
+          "決済方法の多様化提案",
+          "セキュリティ強化の重要性",
+          "利便性向上施策の検討"
+        ]
+      },
+      "is_active": true,
+      "created_at": "2024-01-20T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "survey_id": 3,
+      "insight_type": "productivity_analysis",
+      "title": "リモートワークの生産性向上要因",
+      "description": "在宅勤務環境の整備度と生産性に強い相関関係が見られ、適切な環境設定が重要であることが判明しました",
+      "confidence_score": 0.89,
+      "metadata": {
+        "analysis_method": "productivity_analysis",
+        "key_findings": [
+          "専用作業スペースの有無が生産性に影響",
+          "コミュニケーションツールの活用度が重要",
+          "時間管理能力の向上が必須"
+        ],
+        "recommendations": [
+          "作業環境の最適化ガイド提供",
+          "コミュニケーション効率化施策",
+          "時間管理スキル向上プログラム"
+        ]
+      },
+      "is_active": true,
+      "created_at": "2024-02-01T00:00:00Z"
+    }
+  ],
+  "analytics": [
+    {
+      "id": 1,
+      "survey_id": 1,
+      "metric_name": "completion_rate",
+      "metric_value": 85.2,
+      "calculation_method": "percentage",
+      "time_period": "daily",
+      "metadata": {
+        "total_responses": 342,
+        "completed_responses": 291,
+        "abandoned_responses": 51
+      },
+      "created_at": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "survey_id": 1,
+      "metric_name": "average_rating",
+      "metric_value": 4.2,
+      "calculation_method": "average",
+      "time_period": "daily",
+      "metadata": {
+        "total_ratings": 291,
+        "rating_distribution": {
+          "1": 5,
+          "2": 12,
+          "3": 45,
+          "4": 156,
+          "5": 73
+        }
+      },
+      "created_at": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "survey_id": 2,
+      "metric_name": "response_time",
+      "metric_value": 12.5,
+      "calculation_method": "average",
+      "time_period": "daily",
+      "metadata": {
+        "average_minutes": 12.5,
+        "median_minutes": 11.2,
+        "standard_deviation": 3.8
+      },
+      "created_at": "2024-01-20T00:00:00Z"
+    }
+  ],
+  "charts": {
+    "responseTrend": [
+      { "label": "1月", "value": 120 },
+      { "label": "2月", "value": 150 },
+      { "label": "3月", "value": 180 },
+      { "label": "4月", "value": 200 },
+      { "label": "5月", "value": 220 }
+    ],
+    "categoryDistribution": [
+      { "label": "テクノロジー", "value": 35 },
+      { "label": "ショッピング", "value": 25 },
+      { "label": "ビジネス", "value": 20 },
+      { "label": "ライフスタイル", "value": 15 },
+      { "label": "その他", "value": 5 }
+    ],
+    "satisfactionScore": [
+      { "label": "非常に満足", "value": 45 },
+      { "label": "満足", "value": 35 },
+      { "label": "普通", "value": 15 },
+      { "label": "不満", "value": 3 },
+      { "label": "非常に不満", "value": 2 }
+    ]
+  }
+}

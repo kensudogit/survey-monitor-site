@@ -32,163 +32,106 @@ const AnalyticsDashboard = () => {
     try {
       setLoading(true);
       
-      // モックデータを使用（実際のAPIが利用できない場合）
-      const mockData = {
-        success: true,
-        data: {
-          totalSurveys: 20,
-          totalResponses: 2156,
-          averageCompletionRate: 78.5,
-          averageQualityScore: 72.3,
-          surveys: [
+      // テストデータAPIからデータを取得
+      const response = await fetch('/api/dashboard.json');
+      let data;
+      
+      if (response.ok) {
+        data = await response.json();
+      } else {
+        // フォールバック用のモックデータ
+        data = {
+          overview: {
+            totalUsers: 5,
+            totalSurveys: 5,
+            totalResponses: 5,
+            totalPoints: 6670,
+            completionRate: 85.2,
+            averageRating: 4.2
+          },
+          recentSurveys: [
             {
               id: 1,
-              title: 'スマートフォンアプリの使用状況調査 (テスト1)',
-              category: 'テクノロジー・IT',
-              responses: 156,
-              completionRate: 82.1,
-              qualityScore: 75.2,
-              status: 'active'
+              title: 'スマートフォンアプリの使用状況調査',
+              category_id: 1,
+              current_responses: 342,
+              status: 'active',
+              points: 100
             },
             {
               id: 2,
-              title: 'オンラインショッピングの利用実態 (テスト2)',
-              category: 'ショッピング・EC',
-              responses: 203,
-              completionRate: 76.8,
-              qualityScore: 68.9,
-              status: 'active'
-            },
-            {
-              id: 3,
-              title: 'リモートワークの実態調査 (テスト3)',
-              category: 'ビジネス・働き方',
-              responses: 189,
-              completionRate: 71.2,
-              qualityScore: 74.5,
-              status: 'active'
-            },
-            {
-              id: 4,
-              title: '健康管理アプリの利用調査 (テスト4)',
-              category: 'ヘルスケア・医療',
-              responses: 142,
-              completionRate: 85.3,
-              qualityScore: 79.1,
-              status: 'active'
-            },
-            {
-              id: 5,
-              title: '動画配信サービスの利用実態 (テスト5)',
-              category: 'エンターテイメント',
-              responses: 178,
-              completionRate: 73.6,
-              qualityScore: 70.8,
-              status: 'active'
+              title: 'オンラインショッピングの購買行動分析',
+              category_id: 2,
+              current_responses: 189,
+              status: 'active',
+              points: 150
             }
           ],
-          insights: [
+          topCategories: [
+            { name: 'テクノロジー・IT', count: 1, color: '#3B82F6' },
+            { name: 'ショッピング・EC', count: 1, color: '#10B981' },
+            { name: 'ビジネス・働き方', count: 1, color: '#8B5CF6' }
+          ],
+          aiInsights: [
             {
-              id: 1,
-              type: 'completion_rate',
-              title: '完了率が低いアンケートを発見',
-              description: 'リモートワーク調査の完了率が71.2%と低くなっています。質問数を減らすことを検討してください。',
-              confidence: 85,
-              recommendations: ['質問数を10問以下に減らす', 'ポイントを20%増加させる', '完了時間を5分以内に設定する'],
-              surveyId: 3
-            },
-            {
-              id: 2,
-              type: 'quality_score',
-              title: '回答品質の向上が必要',
-              description: 'オンラインショッピング調査の品質スコアが68.9点です。質問の明確化が必要です。',
-              confidence: 80,
-              recommendations: ['質問文をより具体的にする', '回答オプションを明確にする', '必須回答を適切に設定する'],
-              surveyId: 2
-            },
-            {
-              id: 3,
-              type: 'sentiment_analysis',
-              title: 'ネガティブな感情が検出されています',
-              description: 'スマートフォンアプリ調査で35%の回答者がネガティブな感情を示しています。',
-              confidence: 70,
-              recommendations: ['ネガティブな回答の詳細分析', '改善点の特定', 'ユーザーフィードバックの収集'],
-              surveyId: 1
+              title: 'アプリ使用満足度の高い傾向',
+              description: '3-5時間の使用時間層で最も高い満足度を示しています',
+              confidence_score: 0.87
             }
           ],
-          trends: {
-            dailyResponses: {
-              '2024-01-15': 45,
-              '2024-01-16': 52,
-              '2024-01-17': 38,
-              '2024-01-18': 61,
-              '2024-01-19': 48,
-              '2024-01-20': 55,
-              '2024-01-21': 42
-            },
-            completionRates: {
-              '2024-01-15': 78.2,
-              '2024-01-16': 79.1,
-              '2024-01-17': 76.8,
-              '2024-01-18': 80.3,
-              '2024-01-19': 77.5,
-              '2024-01-20': 79.8,
-              '2024-01-21': 78.1
-            }
-          },
-          demographics: {
-            ageGroups: {
-              'under_20': 45,
-              '20s': 156,
-              '30s': 203,
-              '40s': 189,
-              '50s': 142,
-              'over_60': 78
-            },
-            gender: {
-              'male': 456,
-              'female': 357,
-              'other': 23
-            }
+          charts: {
+            responseTrend: [
+              { label: '1月', value: 120 },
+              { label: '2月', value: 150 },
+              { label: '3月', value: 180 },
+              { label: '4月', value: 200 },
+              { label: '5月', value: 220 }
+            ],
+            categoryDistribution: [
+              { label: 'テクノロジー', value: 35 },
+              { label: 'ショッピング', value: 25 },
+              { label: 'ビジネス', value: 20 },
+              { label: 'ライフスタイル', value: 15 },
+              { label: 'その他', value: 5 }
+            ],
+            satisfactionScore: [
+              { label: '非常に満足', value: 45 },
+              { label: '満足', value: 35 },
+              { label: '普通', value: 15 },
+              { label: '不満', value: 3 },
+              { label: '非常に不満', value: 2 }
+            ]
           }
-        }
-      };
-
-      // 実際のAPIを試行し、失敗した場合はモックデータを使用
-      try {
-        const response = await fetch('/api/analytics/dashboard', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            setDashboardData(data.data);
-            return;
-          }
-        }
-      } catch (apiError) {
-        console.log('API not available, using mock data');
+        };
       }
-
-      // モックデータを使用（確実にデータを設定）
-      console.log('Setting mock data:', mockData.data);
-      setDashboardData(mockData.data);
+      
+      setDashboardData(data);
+      if (data.recentSurveys && data.recentSurveys.length > 0) {
+        setSelectedSurvey(data.recentSurveys[0]);
+      }
     } catch (error) {
-      console.error('Failed to fetch dashboard data:', error);
-      // エラーが発生してもモックデータを設定
+      console.error('ダッシュボードデータの取得に失敗しました:', error);
+      
+      // エラー時のフォールバックデータ
       const fallbackData = {
-        totalSurveys: 20,
-        totalResponses: 2156,
-        averageCompletionRate: 78.5,
-        averageQualityScore: 72.3,
-        surveys: [],
-        insights: [],
-        trends: {},
-        demographics: {}
+        overview: {
+          totalUsers: 0,
+          totalSurveys: 0,
+          totalResponses: 0,
+          totalPoints: 0,
+          completionRate: 0,
+          averageRating: 0
+        },
+        recentSurveys: [],
+        topCategories: [],
+        aiInsights: [],
+        charts: {
+          responseTrend: [],
+          categoryDistribution: [],
+          satisfactionScore: []
+        }
       };
+      
       setDashboardData(fallbackData);
     } finally {
       setLoading(false);

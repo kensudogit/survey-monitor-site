@@ -322,12 +322,35 @@ const PieChart = ({ data, height }) => {
 
 // Area Chart Component
 const AreaChart = ({ data, height }) => {
-  const maxValue = Math.max(...data.map(d => d.value));
-  const minValue = Math.min(...data.map(d => d.value));
-  const range = maxValue - minValue;
+  if (!data || data.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="text-center">
+          <i className="fas fa-chart-area text-4xl mb-2"></i>
+          <p>データがありません</p>
+        </div>
+      </div>
+    );
+  }
+
+  const values = data.map(d => d.value).filter(v => typeof v === 'number' && !isNaN(v));
+  if (values.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="text-center">
+          <i className="fas fa-exclamation-triangle text-4xl mb-2"></i>
+          <p>有効なデータがありません</p>
+        </div>
+      </div>
+    );
+  }
+
+  const maxValue = Math.max(...values);
+  const minValue = Math.min(...values);
+  const range = maxValue === minValue ? 1 : maxValue - minValue;
 
   const pathData = data.map((d, i) => {
-    const x = (i / (data.length - 1)) * 100;
+    const x = data.length > 1 ? (i / (data.length - 1)) * 100 : 50;
     const y = 100 - ((d.value - minValue) / range) * 80;
     return `${x},${y}`;
   }).join(' L ');
@@ -369,7 +392,30 @@ const AreaChart = ({ data, height }) => {
 
 // Donut Chart Component
 const DonutChart = ({ data, height }) => {
-  const total = data.reduce((sum, d) => sum + d.value, 0);
+  if (!data || data.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="text-center">
+          <i className="fas fa-chart-pie text-4xl mb-2"></i>
+          <p>データがありません</p>
+        </div>
+      </div>
+    );
+  }
+
+  const validData = data.filter(d => typeof d.value === 'number' && !isNaN(d.value) && d.value > 0);
+  if (validData.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="text-center">
+          <i className="fas fa-exclamation-triangle text-4xl mb-2"></i>
+          <p>有効なデータがありません</p>
+        </div>
+      </div>
+    );
+  }
+
+  const total = validData.reduce((sum, d) => sum + d.value, 0);
   let cumulativePercentage = 0;
 
   const colors = [
@@ -384,7 +430,7 @@ const DonutChart = ({ data, height }) => {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       <svg width="200" height="200" className="transform -rotate-90">
-        {data.map((d, i) => {
+        {validData.map((d, i) => {
           const percentage = (d.value / total) * 100;
           const startAngle = (cumulativePercentage / 100) * 360;
           const endAngle = ((cumulativePercentage + percentage) / 100) * 360;
