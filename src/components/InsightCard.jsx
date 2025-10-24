@@ -1,5 +1,11 @@
 import React from 'react';
 
+/**
+ * インサイトカードコンポーネント
+ * 
+ * アンケート分析結果を視覚的に表示するカードコンポーネント
+ * タイプ別のスタイリング、信頼度表示、推奨事項、データポイントをサポート
+ */
 const InsightCard = ({ 
   type = 'info',
   title, 
@@ -11,6 +17,7 @@ const InsightCard = ({
   priority = 'medium',
   className = ''
 }) => {
+  // インサイトタイプ別のスタイル定義
   const typeStyles = {
     success: {
       border: 'border-emerald-500',
@@ -38,6 +45,7 @@ const InsightCard = ({
     }
   };
 
+  // 優先度別のリングスタイル定義
   const priorityStyles = {
     high: 'ring-2 ring-red-200',
     medium: 'ring-1 ring-gray-200',
@@ -107,7 +115,7 @@ const InsightCard = ({
   );
 };
 
-// Specialized Insight Cards
+// 完了率分析用の専用インサイトカード
 export const CompletionInsightCard = ({ analytics }) => {
   const completionRate = analytics?.completion_rate || 0;
   
@@ -145,6 +153,7 @@ export const CompletionInsightCard = ({ analytics }) => {
   );
 };
 
+// 回答品質分析用の専用インサイトカード
 export const QualityInsightCard = ({ analytics }) => {
   const qualityScore = analytics?.response_quality_score || 0;
   
@@ -182,6 +191,7 @@ export const QualityInsightCard = ({ analytics }) => {
   );
 };
 
+// デモグラフィック分析用の専用インサイトカード
 export const DemographicInsightCard = ({ analytics }) => {
   const demographics = analytics?.demographic_breakdown;
   
@@ -235,6 +245,7 @@ export const DemographicInsightCard = ({ analytics }) => {
   );
 };
 
+// 感情分析用の専用インサイトカード
 export const SentimentInsightCard = ({ analytics }) => {
   const sentiment = analytics?.sentiment_analysis;
   

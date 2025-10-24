@@ -6,6 +6,12 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * 署名検証ミドルウェア
+ * 
+ * URL署名の有効性を検証するミドルウェア
+ * 一時的なURLやメール認証リンクなどのセキュリティを確保
+ */
 class ValidateSignature
 {
     /**

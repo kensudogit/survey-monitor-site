@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * ルートサービスプロバイダー
+ * 
+ * アプリケーションのルート設定とレート制限を管理するプロバイダー
+ * API・Webルートの登録、レート制限、モデルバインディングを設定
+ */
 class RouteServiceProvider extends ServiceProvider
 {
     /**

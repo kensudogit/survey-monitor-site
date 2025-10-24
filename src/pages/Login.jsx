@@ -2,15 +2,27 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
+/**
+ * ログインページコンポーネント
+ * 
+ * ユーザーのログイン処理を行うコンポーネント
+ * メールアドレス・パスワード認証とデモユーザーログイン機能を提供
+ */
 const Login = () => {
+  // フォーム状態管理
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
+  // 認証コンテキストとナビゲーション
   const { login, loginDemo } = useAuth();
   const navigate = useNavigate();
 
+  /**
+   * ログイン処理
+   * @param {Event} e - フォーム送信イベント
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -31,6 +43,9 @@ const Login = () => {
     }
   };
 
+  /**
+   * デモユーザーログイン処理
+   */
   const handleDemoLogin = async () => {
     setLoading(true);
     setError('');
@@ -53,6 +68,7 @@ const Login = () => {
   return (
     <div className="min-h-screen gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+        {/* ヘッダーセクション */}
         <div className="text-center">
           <img src="/PC.png" alt="Survey Monitor" className="mx-auto h-16 w-16" />
           <h2 className="mt-6 text-3xl font-bold text-white">ログイン</h2>
@@ -61,14 +77,18 @@ const Login = () => {
           </p>
         </div>
 
+        {/* ログインフォーム */}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {/* エラーメッセージ表示 */}
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
               {error}
             </div>
           )}
 
+          {/* フォーム入力フィールド */}
           <div className="space-y-4">
+            {/* メールアドレス入力 */}
             <div className="relative">
               <label htmlFor="email" className="block text-sm font-semibold text-white mb-2">
                 <i className="fas fa-envelope mr-2"></i>メールアドレス
@@ -85,6 +105,7 @@ const Login = () => {
                 placeholder="example@email.com"
               />
             </div>
+            {/* パスワード入力 */}
             <div className="relative">
               <label htmlFor="password" className="block text-sm font-semibold text-white mb-2">
                 <i className="fas fa-lock mr-2"></i>パスワード
@@ -103,6 +124,7 @@ const Login = () => {
             </div>
           </div>
 
+          {/* ログイン状態保持とパスワードリセット */}
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -123,6 +145,7 @@ const Login = () => {
             </div>
           </div>
 
+          {/* ログインボタン */}
           <div>
             <button
               type="submit"
@@ -136,6 +159,7 @@ const Login = () => {
             </button>
           </div>
 
+          {/* デモユーザーログイン */}
           <div className="text-center">
             <div className="text-sm text-white">
               デモアカウントでログイン:
@@ -150,6 +174,7 @@ const Login = () => {
             </div>
           </div>
           
+          {/* 新規登録リンク */}
           <div className="text-center pt-4 border-t border-white/30">
             <p className="text-white">
               アカウントをお持ちでない方は

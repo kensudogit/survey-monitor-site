@@ -6,6 +6,12 @@ use Illuminate\Console\Command;
 use App\Services\SurveyAnalyticsService;
 use App\Services\ReportGenerationService;
 
+/**
+ * 分析生成コマンド
+ * 
+ * アンケートの分析データとAI洞察を生成するArtisanコマンド
+ * 個別アンケートまたは全アンケートの分析処理を実行
+ */
 class GenerateAnalytics extends Command
 {
     /**

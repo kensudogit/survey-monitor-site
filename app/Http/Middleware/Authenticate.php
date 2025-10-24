@@ -5,6 +5,12 @@ namespace App\Http\Middleware;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
 
+/**
+ * 認証ミドルウェア
+ * 
+ * ユーザーの認証状態をチェックするミドルウェア
+ * 未認証ユーザーをログインページにリダイレクト
+ */
 class Authenticate extends Middleware
 {
     /**

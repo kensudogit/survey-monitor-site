@@ -12,6 +12,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * アンケート分析コントローラー
+ * 
+ * アンケートの分析データ、AI洞察、パフォーマンス指標を提供するコントローラー
+ * リアルタイムダッシュボード、レポート生成、データフィルタリング機能を実装
+ */
 class SurveyAnalyticsController extends Controller
 {
     protected $analyticsService;

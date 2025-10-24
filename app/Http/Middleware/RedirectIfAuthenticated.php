@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * 認証済みリダイレクトミドルウェア
+ * 
+ * 既に認証済みのユーザーをダッシュボードにリダイレクトするミドルウェア
+ * ログインページなどで認証済みユーザーのアクセスを制御
+ */
 class RedirectIfAuthenticated
 {
     /**

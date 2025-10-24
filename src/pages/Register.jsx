@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
+/**
+ * 新規登録ページコンポーネント
+ * 
+ * ユーザーの新規アカウント作成処理を行うコンポーネント
+ * 基本情報、認証情報、デモグラフィック情報の入力フォームを提供
+ */
 const Register = () => {
+  // フォームデータ状態管理
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -14,9 +21,14 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
+  // 認証コンテキストとナビゲーション
   const { register } = useAuth();
   const navigate = useNavigate();
 
+  /**
+   * フォーム入力値の変更処理
+   * @param {Event} e - 入力イベント
+   */
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -24,11 +36,16 @@ const Register = () => {
     });
   };
 
+  /**
+   * 新規登録処理
+   * @param {Event} e - フォーム送信イベント
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
+    // パスワード確認
     if (formData.password !== formData.confirmPassword) {
       setError('パスワードが一致しません');
       setLoading(false);
@@ -53,6 +70,7 @@ const Register = () => {
   return (
     <div className="min-h-screen gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+        {/* ヘッダーセクション */}
         <div className="text-center">
           <img src="/PC.png" alt="Survey Monitor" className="mx-auto h-16 w-16" />
           <h2 className="mt-6 text-3xl font-bold text-white">新規登録</h2>
@@ -61,14 +79,18 @@ const Register = () => {
           </p>
         </div>
 
+        {/* 新規登録フォーム */}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {/* エラーメッセージ表示 */}
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
               {error}
             </div>
           )}
 
+          {/* フォーム入力フィールド */}
           <div className="space-y-4">
+            {/* お名前入力 */}
             <div>
               <label htmlFor="name" className="block text-sm font-semibold text-white mb-2">
                 <i className="fas fa-user mr-2"></i>お名前
@@ -85,6 +107,7 @@ const Register = () => {
               />
             </div>
 
+            {/* メールアドレス入力 */}
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-white mb-2">
                 <i className="fas fa-envelope mr-2"></i>メールアドレス
@@ -102,6 +125,7 @@ const Register = () => {
               />
             </div>
 
+            {/* パスワード入力 */}
             <div>
               <label htmlFor="password" className="block text-sm font-semibold text-white mb-2">
                 <i className="fas fa-lock mr-2"></i>パスワード
@@ -118,6 +142,7 @@ const Register = () => {
               />
             </div>
 
+            {/* パスワード確認入力 */}
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-semibold text-white mb-2">
                 <i className="fas fa-lock mr-2"></i>パスワード確認
@@ -134,6 +159,7 @@ const Register = () => {
               />
             </div>
 
+            {/* 年齢層選択 */}
             <div>
               <label htmlFor="age" className="block text-sm font-semibold text-white mb-2">
                 <i className="fas fa-calendar mr-2"></i>年齢層
@@ -156,6 +182,7 @@ const Register = () => {
               </select>
             </div>
 
+            {/* 性別選択 */}
             <div>
               <label htmlFor="gender" className="block text-sm font-semibold text-white mb-2">
                 <i className="fas fa-venus-mars mr-2"></i>性別
@@ -176,6 +203,7 @@ const Register = () => {
             </div>
           </div>
 
+          {/* 登録ボタン */}
           <div>
             <button
               type="submit"
@@ -189,6 +217,7 @@ const Register = () => {
             </button>
           </div>
           
+          {/* ログインリンク */}
           <div className="text-center pt-4 border-t border-white/30">
             <p className="text-white">
               既にアカウントをお持ちの方は

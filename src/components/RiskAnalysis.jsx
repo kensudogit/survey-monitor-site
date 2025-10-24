@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import ModernChart from './ModernChart';
 
+/**
+ * リスク分析コンポーネント
+ * 
+ * システムのリスクを分析・予測し、改善策を提案するコンポーネント
+ * リスクトレンド、予測分析、推奨アクションを提供
+ */
 const RiskAnalysis = ({ riskData }) => {
+  // 選択されたリスクとリスクトレンドの状態管理
   const [selectedRisk, setSelectedRisk] = useState(null);
   const [riskTrends, setRiskTrends] = useState([]);
 
@@ -18,12 +25,22 @@ const RiskAnalysis = ({ riskData }) => {
     setRiskTrends(trends);
   }, [riskData]);
 
+  /**
+   * リスクレベルに応じたカラースタイルを取得
+   * @param {number} risk - リスク値（0-100）
+   * @returns {string} カラークラス文字列
+   */
   const getRiskColor = (risk) => {
     if (risk >= 80) return 'text-red-600 bg-red-100';
     if (risk >= 60) return 'text-yellow-600 bg-yellow-100';
     return 'text-green-600 bg-green-100';
   };
 
+  /**
+   * リスクレベルに応じたアイコンを取得
+   * @param {number} risk - リスク値（0-100）
+   * @returns {string} アイコンクラス文字列
+   */
   const getRiskIcon = (risk) => {
     if (risk >= 80) return 'fas fa-exclamation-triangle';
     if (risk >= 60) return 'fas fa-exclamation-circle';
@@ -204,7 +221,12 @@ const RiskAnalysis = ({ riskData }) => {
   );
 };
 
-// 推奨アクションを生成する関数
+/**
+ * 推奨アクションを生成する関数
+ * リスクエリアに応じた具体的な改善策を提供
+ * @param {string} area - リスクエリア名
+ * @returns {Array} 推奨アクション配列
+ */
 const getRecommendations = (area) => {
   const recommendations = {
     'データセキュリティ': [

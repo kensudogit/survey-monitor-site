@@ -13,6 +13,12 @@ use App\Models\SurveyInsight;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * テストデータ生成コマンド
+ * 
+ * AI分析機能の検証用に包括的なテストデータを生成するArtisanコマンド
+ * 日本人名、リアルなアンケート内容、感情分析データなどを含む複雑なテストデータを作成
+ */
 class GenerateTestData extends Command
 {
     /**

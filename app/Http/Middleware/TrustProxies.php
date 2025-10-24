@@ -5,6 +5,12 @@ namespace App\Http\Middleware;
 use Illuminate\Foundation\Http\Middleware\TrustProxies as Middleware;
 use Illuminate\Http\Request;
 
+/**
+ * プロキシ信頼ミドルウェア
+ * 
+ * リバースプロキシやロードバランサーからのリクエストを信頼するミドルウェア
+ * HTTPS、クライアントIP、ホスト情報の正確な取得を可能にする
+ */
 class TrustProxies extends Middleware
 {
     /**

@@ -10,6 +10,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
+/**
+ * アンケート分析サービス
+ * 
+ * アンケートの包括的な分析処理を行うサービスクラス
+ * 完了率計算、品質スコア算出、感情分析、AI洞察生成などの機能を提供
+ */
 class SurveyAnalyticsService
 {
     public function generateSurveyAnalytics($surveyId)

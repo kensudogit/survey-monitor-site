@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * テストデータコントローラー
+ * 
+ * 開発・デモンストレーション用のテストデータを提供するコントローラー
+ * JSONファイルからテストデータを読み込み、APIエンドポイントとして提供
+ */
 class TestDataController extends Controller
 {
     /**

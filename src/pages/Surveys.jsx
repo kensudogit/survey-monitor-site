@@ -1,9 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
+/**
+ * アンケート一覧ページ
+ * APIからアンケートデータを取得して表示
+ */
 const Surveys = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const [surveys, setSurveys] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadData();
+    }
+  }, [isAuthenticated]);
+
+  /**
+   * アンケートとカテゴリーデータの読み込み
+   */
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      
+      // アンケート一覧の取得
+      const surveysResponse = await fetch('/api/surveys.json');
+      const surveysData = await surveysResponse.json();
+      
+      if (surveysData.success) {
+        setSurveys(surveysData.data);
+      }
+      
+      // カテゴリー一覧の取得
+      const categoriesResponse = await fetch('/api/surveys-categories.json');
+      const categoriesData = await categoriesResponse.json();
+      
+      if (categoriesData.success) {
+        setCategories(categoriesData.data);
+      }
+      
+    } catch (err) {
+      console.error('Failed to load data:', err);
+      setError('データの読み込みに失敗しました');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!isAuthenticated) {
     return (
@@ -14,6 +59,34 @@ const Surveys = () => {
           <Link to="/login" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
             ログイン
           </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">データを読み込み中...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">エラーが発生しました</h2>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button 
+            onClick={loadData}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            再試行
+          </button>
         </div>
       </div>
     );
@@ -31,7 +104,7 @@ const Surveys = () => {
       <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-2">8</div>
+            <div className="text-3xl font-bold text-blue-600 mb-2">{surveys.length}</div>
             <div className="text-gray-600">利用可能なアンケート</div>
           </div>
           <div className="text-center">
@@ -39,11 +112,13 @@ const Surveys = () => {
             <div className="text-gray-600">完了済み</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-purple-600 mb-2">0</div>
+            <div className="text-3xl font-bold text-purple-600 mb-2">{user?.points || 0}</div>
             <div className="text-gray-600">獲得ポイント</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-orange-600 mb-2">6.5分</div>
+            <div className="text-3xl font-bold text-orange-600 mb-2">
+              {surveys.length > 0 ? Math.round(surveys.reduce((sum, survey) => sum + (survey.estimated_time || 0), 0) / surveys.length) : 0}分
+            </div>
             <div className="text-gray-600">平均回答時間</div>
           </div>
         </div>
@@ -56,105 +131,59 @@ const Surveys = () => {
           <Link to="/category/all" className="category-card bg-blue-500 text-white p-6 rounded-lg text-center hover:bg-blue-600 transition-all hover-lift">
             <i className="fas fa-th-large text-2xl mb-2"></i>
             <div className="font-semibold">すべて</div>
-            <div className="text-sm opacity-90">8件</div>
+            <div className="text-sm opacity-90">{surveys.length}件</div>
           </Link>
-          <Link to="/category/テクノロジー" className="category-card bg-blue-500 text-white p-6 rounded-lg text-center hover:bg-blue-600 transition-all hover-lift">
-            <i className="fas fa-laptop-code text-2xl mb-2"></i>
-            <div className="font-semibold">テクノロジー</div>
-            <div className="text-sm opacity-90">2件</div>
-          </Link>
-          <Link to="/category/ショッピング" className="category-card bg-green-500 text-white p-6 rounded-lg text-center hover:bg-green-600 transition-all hover-lift">
-            <i className="fas fa-shopping-cart text-2xl mb-2"></i>
-            <div className="font-semibold">ショッピング</div>
-            <div className="text-sm opacity-90">2件</div>
-          </Link>
-          <Link to="/category/ビジネス" className="category-card bg-purple-500 text-white p-6 rounded-lg text-center hover:bg-purple-600 transition-all hover-lift">
-            <i className="fas fa-briefcase text-2xl mb-2"></i>
-            <div className="font-semibold">ビジネス</div>
-            <div className="text-sm opacity-90">1件</div>
-          </Link>
-          <Link to="/category/ライフスタイル" className="category-card bg-pink-500 text-white p-6 rounded-lg text-center hover:bg-pink-600 transition-all hover-lift">
-            <i className="fas fa-heart text-2xl mb-2"></i>
-            <div className="font-semibold">ライフスタイル</div>
-            <div className="text-sm opacity-90">1件</div>
-          </Link>
-          <Link to="/category/エンターテイメント" className="category-card bg-yellow-500 text-white p-6 rounded-lg text-center hover:bg-yellow-600 transition-all hover-lift">
-            <i className="fas fa-gamepad text-2xl mb-2"></i>
-            <div className="font-semibold">エンターテイメント</div>
-            <div className="text-sm opacity-90">1件</div>
-          </Link>
-          <Link to="/category/ヘルスケア" className="category-card bg-red-500 text-white p-6 rounded-lg text-center hover:bg-red-600 transition-all hover-lift">
-            <i className="fas fa-heartbeat text-2xl mb-2"></i>
-            <div className="font-semibold">ヘルスケア</div>
-            <div className="text-sm opacity-90">1件</div>
-          </Link>
+          {categories.map((category) => {
+            const categorySurveys = surveys.filter(survey => survey.category === category.name);
+            return (
+              <Link 
+                key={category.id} 
+                to={`/category/${category.name}`} 
+                className="category-card text-white p-6 rounded-lg text-center hover:opacity-90 transition-all hover-lift"
+                style={{ backgroundColor: category.color }}
+              >
+                <i className={`${category.icon} text-2xl mb-2`}></i>
+                <div className="font-semibold">{category.name}</div>
+                <div className="text-sm opacity-90">{categorySurveys.length}件</div>
+              </Link>
+            );
+          })}
         </div>
       </div>
 
       {/* Surveys Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="survey-card bg-white rounded-xl shadow-lg overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=200&fit=crop" alt="スマートフォンアプリの使用状況調査" className="w-full h-48 object-cover" />
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-3">
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">テクノロジー</span>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">スマートフォンアプリの使用状況調査</h3>
-            <p className="text-gray-600 text-sm mb-4">日常的に使用しているアプリについて教えてください</p>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-4 text-sm text-gray-500">
-                <span><i className="fas fa-clock mr-1"></i>5分</span>
-                <span><i className="fas fa-question-circle mr-1"></i>8問</span>
+        {surveys.map((survey) => (
+          <div key={survey.id} className="survey-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <img 
+              src={survey.image_url || 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=200&fit=crop'} 
+              alt={survey.title} 
+              className="w-full h-48 object-cover" 
+            />
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-3">
+                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                  {survey.category}
+                </span>
               </div>
-              <span className="text-lg font-bold text-green-600 points-glow">50pt</span>
-            </div>
-            <Link to="/survey/survey_1" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors font-semibold text-center block">
-              <i className="fas fa-play mr-2"></i>回答する
-            </Link>
-          </div>
-        </div>
-
-        <div className="survey-card bg-white rounded-xl shadow-lg overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=200&fit=crop" alt="オンラインショッピングの利用実態" className="w-full h-48 object-cover" />
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-3">
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">ショッピング</span>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">オンラインショッピングの利用実態</h3>
-            <p className="text-gray-600 text-sm mb-4">あなたの買い物習慣について教えてください</p>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-4 text-sm text-gray-500">
-                <span><i className="fas fa-clock mr-1"></i>7分</span>
-                <span><i className="fas fa-question-circle mr-1"></i>12問</span>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{survey.title}</h3>
+              <p className="text-gray-600 text-sm mb-4">{survey.description}</p>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  <span><i className="fas fa-clock mr-1"></i>{survey.estimated_time}分</span>
+                  <span><i className="fas fa-question-circle mr-1"></i>{survey.questions?.length || 0}問</span>
+                </div>
+                <span className="text-lg font-bold text-green-600 points-glow">{survey.points}pt</span>
               </div>
-              <span className="text-lg font-bold text-green-600 points-glow">40pt</span>
+              <Link 
+                to={`/survey/${survey.id}`} 
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors font-semibold text-center block"
+              >
+                <i className="fas fa-play mr-2"></i>回答する
+              </Link>
             </div>
-            <Link to="/survey/survey_2" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors font-semibold text-center block">
-              <i className="fas fa-play mr-2"></i>回答する
-            </Link>
           </div>
-        </div>
-
-        <div className="survey-card bg-white rounded-xl shadow-lg overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=200&fit=crop" alt="働き方に関する意識調査" className="w-full h-48 object-cover" />
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-3">
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">ビジネス</span>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">働き方に関する意識調査</h3>
-            <p className="text-gray-600 text-sm mb-4">現代の働き方についてあなたの意見を聞かせてください</p>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-4 text-sm text-gray-500">
-                <span><i className="fas fa-clock mr-1"></i>10分</span>
-                <span><i className="fas fa-question-circle mr-1"></i>15問</span>
-              </div>
-              <span className="text-lg font-bold text-green-600 points-glow">60pt</span>
-            </div>
-            <Link to="/survey/survey_3" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors font-semibold text-center block">
-              <i className="fas fa-play mr-2"></i>回答する
-            </Link>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

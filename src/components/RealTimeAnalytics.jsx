@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import ModernChart from './ModernChart';
 
+/**
+ * リアルタイム分析コンポーネント
+ * 
+ * リアルタイムでデータを更新・表示する分析ダッシュボード
+ * 訪問者数、ページビュー、直帰率、セッション時間などのメトリクスを提供
+ */
 const RealTimeAnalytics = ({ data }) => {
+  // リアルタイムデータとライブ状態の管理
   const [realTimeData, setRealTimeData] = useState(data);
   const [isLive, setIsLive] = useState(true);
 
   useEffect(() => {
     if (!isLive) return;
 
+    // リアルタイムデータ更新のインターバル設定
     const interval = setInterval(() => {
       // リアルタイムデータを更新
       setRealTimeData(prev => ({

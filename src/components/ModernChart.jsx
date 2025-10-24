@@ -1,10 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 
-// Modern Chart Component with CSS animations
+/**
+ * モダンチャートコンポーネント
+ * 
+ * CSS アニメーションを使用したモダンなチャート表示コンポーネント
+ * ライン、バー、パイ、エリア、ドーナツチャートをサポート
+ */
 const ModernChart = ({ type, data, title, height = 300, className = '', options = {} }) => {
   const chartRef = useRef(null);
 
-  // データ検証とフォールバック
+  /**
+   * データ検証とフォールバック処理
+   * 無効なデータを適切な形式に変換し、エラーを防ぐ
+   * @param {Array} data - 検証するデータ配列
+   * @returns {Array} 検証済みデータ配列
+   */
   const validateData = (data) => {
     if (!data || !Array.isArray(data)) {
       return [];
@@ -27,12 +37,16 @@ const ModernChart = ({ type, data, title, height = 300, className = '', options 
   const validatedData = validateData(data);
 
   useEffect(() => {
-    // Simulate chart rendering with CSS animations
+    // CSS アニメーションでチャートレンダリングをシミュレート
     if (chartRef.current) {
       chartRef.current.classList.add('fade-in');
     }
   }, [validatedData]);
 
+  /**
+   * チャートタイプに応じたレンダリング処理
+   * @returns {JSX.Element} レンダリングされたチャートコンポーネント
+   */
   const renderChart = () => {
     if (validatedData.length === 0) {
       return (
@@ -79,7 +93,7 @@ const ModernChart = ({ type, data, title, height = 300, className = '', options 
   );
 };
 
-// Line Chart Component
+// ラインチャートコンポーネント
 const LineChart = ({ data, height }) => {
   if (!data || data.length === 0) {
     return (
@@ -174,7 +188,7 @@ const LineChart = ({ data, height }) => {
   );
 };
 
-// Bar Chart Component
+// バーチャートコンポーネント
 const BarChart = ({ data, height }) => {
   if (!data || data.length === 0) {
     return (
@@ -223,7 +237,7 @@ const BarChart = ({ data, height }) => {
   );
 };
 
-// Pie Chart Component
+// パイチャートコンポーネント
 const PieChart = ({ data, height }) => {
   if (!data || data.length === 0) {
     return (
@@ -320,7 +334,7 @@ const PieChart = ({ data, height }) => {
   );
 };
 
-// Area Chart Component
+// エリアチャートコンポーネント
 const AreaChart = ({ data, height }) => {
   if (!data || data.length === 0) {
     return (
@@ -390,7 +404,7 @@ const AreaChart = ({ data, height }) => {
   );
 };
 
-// Donut Chart Component
+// ドーナツチャートコンポーネント
 const DonutChart = ({ data, height }) => {
   if (!data || data.length === 0) {
     return (

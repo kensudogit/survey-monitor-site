@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/**
+ * ダッシュボードコントローラー
+ * 
+ * ユーザーの個人ダッシュボードを表示するコントローラー
+ * ポイント残高、収益、完了アンケート数、利用可能アンケートを提供
+ */
 class DashboardController extends Controller
 {
     public function index()

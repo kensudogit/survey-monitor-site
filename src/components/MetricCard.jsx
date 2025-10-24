@@ -1,5 +1,11 @@
 import React from 'react';
 
+/**
+ * メトリックカードコンポーネント
+ * 
+ * 数値データを視覚的に表示するカードコンポーネント
+ * タイトル、値、変化率、アイコン、トレンド情報をサポート
+ */
 const MetricCard = ({ 
   title, 
   value, 
@@ -12,6 +18,7 @@ const MetricCard = ({
   loading = false,
   className = ''
 }) => {
+  // カラーテーマ別のスタイル定義
   const colorClasses = {
     primary: 'from-blue-500 to-purple-500',
     success: 'from-emerald-500 to-teal-500',
@@ -20,6 +27,7 @@ const MetricCard = ({
     info: 'from-cyan-500 to-blue-500'
   };
 
+  // アイコンカラー別のスタイル定義
   const iconColors = {
     primary: 'text-blue-600 bg-blue-100',
     success: 'text-emerald-600 bg-emerald-100',
@@ -28,6 +36,7 @@ const MetricCard = ({
     info: 'text-cyan-600 bg-cyan-100'
   };
 
+  // 変化率表示用のスタイル定義
   const changeColors = {
     positive: 'text-emerald-600 bg-emerald-50',
     negative: 'text-red-600 bg-red-50',
@@ -101,7 +110,9 @@ const MetricCard = ({
   );
 };
 
-// Specialized Metric Cards
+// 専用メトリックカードコンポーネント群
+
+// アンケート数表示用のメトリックカード
 export const SurveyMetricCard = ({ survey, analytics, loading }) => (
   <MetricCard
     title="総アンケート数"
@@ -115,6 +126,7 @@ export const SurveyMetricCard = ({ survey, analytics, loading }) => (
   />
 );
 
+// 回答数表示用のメトリックカード
 export const ResponseMetricCard = ({ analytics, loading }) => (
   <MetricCard
     title="総回答数"
@@ -128,6 +140,7 @@ export const ResponseMetricCard = ({ analytics, loading }) => (
   />
 );
 
+// 完了率表示用のメトリックカード
 export const CompletionMetricCard = ({ analytics, loading }) => (
   <MetricCard
     title="平均完了率"
@@ -141,6 +154,7 @@ export const CompletionMetricCard = ({ analytics, loading }) => (
   />
 );
 
+// 品質スコア表示用のメトリックカード
 export const QualityMetricCard = ({ analytics, loading }) => (
   <MetricCard
     title="平均品質スコア"

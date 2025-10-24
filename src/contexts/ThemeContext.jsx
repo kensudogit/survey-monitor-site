@@ -1,7 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+/**
+ * テーマコンテキスト
+ * 
+ * アプリケーションのテーマ（ライト/ダークモード）を管理するReactコンテキスト
+ * ローカルストレージとシステム設定を考慮したテーマ切り替え機能を提供
+ */
 const ThemeContext = createContext();
 
+/**
+ * テーマフック
+ * 
+ * ThemeContextからテーマ状態とメソッドを取得するカスタムフック
+ * @returns {Object} テーマ状態とメソッドを含むオブジェクト
+ */
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
@@ -10,15 +22,23 @@ export const useTheme = () => {
   return context;
 };
 
+/**
+ * テーマプロバイダーコンポーネント
+ * 
+ * アプリケーション全体でテーマ状態を共有するプロバイダー
+ * @param {Object} props - プロパティ
+ * @param {React.ReactNode} props.children - 子コンポーネント
+ */
 export const ThemeProvider = ({ children }) => {
+  // テーマ状態の初期化（ローカルストレージとシステム設定を考慮）
   const [theme, setTheme] = useState(() => {
-    // Check localStorage first, then system preference
+    // ローカルストレージから保存されたテーマを確認
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       return savedTheme;
     }
     
-    // Check system preference
+    // システム設定を確認
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
     }
@@ -27,11 +47,15 @@ export const ThemeProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    // Apply theme to document
+    // テーマをドキュメントに適用し、ローカルストレージに保存
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  /**
+   * テーマの切り替え処理
+   * ライトモードとダークモードを切り替える
+   */
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };

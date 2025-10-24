@@ -1,0 +1,77 @@
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "テクノロジー",
+      "slug": "technology",
+      "description": "IT・テクノロジー関連のアンケート",
+      "color": "#3B82F6",
+      "icon": "fas fa-laptop",
+      "is_active": true,
+      "sort_order": 1,
+      "created_at": "2024-01-20T00:00:00.000000Z",
+      "updated_at": "2024-01-20T00:00:00.000000Z"
+    },
+    {
+      "id": 2,
+      "name": "ショッピング",
+      "slug": "shopping",
+      "description": "買い物・EC関連のアンケート",
+      "color": "#10B981",
+      "icon": "fas fa-shopping-cart",
+      "is_active": true,
+      "sort_order": 2,
+      "created_at": "2024-01-20T00:00:00.000000Z",
+      "updated_at": "2024-01-20T00:00:00.000000Z"
+    },
+    {
+      "id": 3,
+      "name": "ビジネス",
+      "slug": "business",
+      "description": "ビジネス・働き方関連のアンケート",
+      "color": "#F59E0B",
+      "icon": "fas fa-briefcase",
+      "is_active": true,
+      "sort_order": 3,
+      "created_at": "2024-01-20T00:00:00.000000Z",
+      "updated_at": "2024-01-20T00:00:00.000000Z"
+    },
+    {
+      "id": 4,
+      "name": "ライフスタイル",
+      "slug": "lifestyle",
+      "description": "生活・ライフスタイル関連のアンケート",
+      "color": "#EF4444",
+      "icon": "fas fa-heart",
+      "is_active": true,
+      "sort_order": 4,
+      "created_at": "2024-01-20T00:00:00.000000Z",
+      "updated_at": "2024-01-20T00:00:00.000000Z"
+    },
+    {
+      "id": 5,
+      "name": "エンターテイメント",
+      "slug": "entertainment",
+      "description": "エンターテイメント・ゲーム関連のアンケート",
+      "color": "#8B5CF6",
+      "icon": "fas fa-gamepad",
+      "is_active": true,
+      "sort_order": 5,
+      "created_at": "2024-01-20T00:00:00.000000Z",
+      "updated_at": "2024-01-20T00:00:00.000000Z"
+    },
+    {
+      "id": 6,
+      "name": "ヘルスケア",
+      "slug": "healthcare",
+      "description": "健康・医療関連のアンケート",
+      "color": "#06B6D4",
+      "icon": "fas fa-heartbeat",
+      "is_active": true,
+      "sort_order": 6,
+      "created_at": "2024-01-20T00:00:00.000000Z",
+      "updated_at": "2024-01-20T00:00:00.000000Z"
+    }
+  ]
+}

@@ -321,18 +321,27 @@ GET /api/analytics/report/{id}/download   # レポートダウンロード
 ### 認証
 すべての API エンドポイントは `auth:sanctum` ミドルウェアで保護されています。
 
-## 🚀 デプロイ済みURL
+## 🚀 デプロイ済みURL（完全公開モード）
 
-### 本番環境
-- **メインURL**: `https://survey-monitor-site-dp1axl0dx-kensudogits-projects.vercel.app`
-- **管理URL**: `https://vercel.com/kensudogits-projects/survey-monitor-site/F6kJayW2ui2U2b3KVmxY4anaNN8Q`
+### 🌐 本番環境
+- **最新デプロイ**: [https://survey-monitor-site-1za8glkrt-kensudogits-projects.vercel.app](https://survey-monitor-site-1za8glkrt-kensudogits-projects.vercel.app)
+- **メインサイト**: [https://survey-monitor-site.vercel.app](https://survey-monitor-site.vercel.app)
+- **プレビュー**: [https://survey-monitor-site-git-main-kensudogits-projects.vercel.app](https://survey-monitor-site-git-main-kensudogits-projects.vercel.app)
 
-### 機能確認
+### 📊 デプロイ情報
+- **デプロイ時間**: 約7秒（高速デプロイ）
+- **ビルド時間**: 約4秒（最適化済み）
+- **ステータス**: ✅ Ready（正常稼働中）
+- **環境**: Production（本番環境）
+- **公開設定**: 完全公開モード（誰でもアクセス可能）
+
+### 🔧 機能確認
 1. **ホームページ**: プロジェクト概要と機能紹介
 2. **ログイン**: デモユーザーでログイン可能
 3. **アンケート一覧**: カテゴリー別アンケート表示
 4. **AI分析ダッシュボード**: `/analytics` でアクセス
 5. **ダークモード**: ヘッダーのテーマ切り替えボタン
+6. **API エンドポイント**: `/api/surveys.json` でデータ取得
 
 ## 📈 パフォーマンス指標
 

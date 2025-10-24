@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+/**
+ * ホームページコンポーネント
+ * 
+ * サイトのトップページを表示するコンポーネント
+ * ヒーローセクション、統計情報、おすすめアンケート、機能紹介を提供
+ */
 const Home = () => {
   return (
     <div>
-      {/* Hero Section */}
+      {/* ヒーローセクション - メインビジュアルとCTA */}
       <section className="gradient-bg text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-6xl font-bold mb-6">アンケートでポイントを獲得</h2>
@@ -20,7 +26,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* 統計セクション - サイトの実績数値を表示 */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -44,11 +50,12 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Surveys */}
+      {/* おすすめアンケートセクション - 人気のアンケートを表示 */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">おすすめアンケート</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* テクノロジーカテゴリのアンケート */}
             <div className="bg-white rounded-lg shadow-md card-hover">
               <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=200&fit=crop" alt="スマートフォンアプリの使用状況調査" className="w-full h-48 object-cover rounded-t-lg" />
               <div className="p-6">
@@ -70,6 +77,7 @@ const Home = () => {
               </div>
             </div>
 
+            {/* ショッピングカテゴリのアンケート */}
             <div className="bg-white rounded-lg shadow-md card-hover">
               <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=200&fit=crop" alt="オンラインショッピングの利用実態" className="w-full h-48 object-cover rounded-t-lg" />
               <div className="p-6">
@@ -91,6 +99,7 @@ const Home = () => {
               </div>
             </div>
 
+            {/* ビジネスカテゴリのアンケート */}
             <div className="bg-white rounded-lg shadow-md card-hover">
               <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=200&fit=crop" alt="働き方に関する意識調査" className="w-full h-48 object-cover rounded-t-lg" />
               <div className="p-6">
@@ -115,11 +124,12 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* 機能紹介セクション - サイトの特徴を説明 */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">なぜSurvey Monitorなのか？</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* ポイント獲得の特徴 */}
             <div className="text-center">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i className="fas fa-gift text-2xl text-blue-600"></i>
@@ -127,6 +137,7 @@ const Home = () => {
               <h4 className="text-xl font-semibold text-gray-900 mb-2">ポイント獲得</h4>
               <p className="text-gray-600">アンケートに回答するだけでポイントを獲得できます</p>
             </div>
+            {/* 短時間完了の特徴 */}
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i className="fas fa-clock text-2xl text-green-600"></i>
@@ -134,6 +145,7 @@ const Home = () => {
               <h4 className="text-xl font-semibold text-gray-900 mb-2">短時間で完了</h4>
               <p className="text-gray-600">平均6.5分で完了する短時間アンケート</p>
             </div>
+            {/* 安全・安心の特徴 */}
             <div className="text-center">
               <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i className="fas fa-shield-alt text-2xl text-purple-600"></i>

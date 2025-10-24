@@ -1,7 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+/**
+ * 認証コンテキスト
+ * 
+ * ユーザー認証状態と認証関連の機能を管理するReactコンテキスト
+ * ローカルストレージベースの認証システムを提供
+ */
 const AuthContext = createContext();
 
+/**
+ * 認証フック
+ * 
+ * AuthContextから認証状態とメソッドを取得するカスタムフック
+ * @returns {Object} 認証状態とメソッドを含むオブジェクト
+ */
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -10,7 +22,15 @@ export const useAuth = () => {
   return context;
 };
 
+/**
+ * 認証プロバイダーコンポーネント
+ * 
+ * アプリケーション全体で認証状態を共有するプロバイダー
+ * @param {Object} props - プロパティ
+ * @param {React.ReactNode} props.children - 子コンポーネント
+ */
 export const AuthProvider = ({ children }) => {
+  // 認証状態の管理
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -23,6 +43,11 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  /**
+   * ユーザー新規登録処理
+   * @param {Object} userData - ユーザーデータ
+   * @returns {Object} 登録結果
+   */
   const register = async (userData) => {
     try {
       // バリデーション
@@ -64,6 +89,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * ユーザーログイン処理
+   * @param {string} email - メールアドレス
+   * @param {string} password - パスワード
+   * @returns {Object} ログイン結果
+   */
   const login = async (email, password) => {
     try {
       const users = getUsers();
@@ -87,6 +118,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * デモユーザーログイン処理
+   * @returns {Object} ログイン結果
+   */
   const loginDemo = () => {
     const demoUser = {
       id: 'demo_user',
@@ -118,12 +153,19 @@ export const AuthProvider = ({ children }) => {
     return { success: true, user: demoUser };
   };
 
+  /**
+   * ユーザーログアウト処理
+   */
   const logout = () => {
     console.log('Logging out user:', currentUser?.name);
     setCurrentUser(null);
     localStorage.removeItem('survey_monitor_user');
   };
 
+  /**
+   * ポイント追加処理
+   * @param {number} points - 追加するポイント数
+   */
   const addPoints = (points) => {
     if (currentUser) {
       const updatedUser = { ...currentUser, points: currentUser.points + points };
@@ -133,6 +175,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * アンケート完了処理
+   * @param {string} surveyId - アンケートID
+   */
   const completeSurvey = (surveyId) => {
     if (currentUser && !currentUser.surveysCompleted.includes(surveyId)) {
       const updatedUser = {
@@ -145,7 +191,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ヘルパー関数
+  // ヘルパー関数群
+
+  /**
+   * ユーザーデータのバリデーション
+   * @param {Object} userData - ユーザーデータ
+   * @returns {boolean} バリデーション結果
+   */
   const validateUserData = (userData) => {
     if (!userData.name || userData.name.length < 2) return false;
     if (!userData.email || !isValidEmail(userData.email)) return false;
@@ -154,20 +206,38 @@ export const AuthProvider = ({ children }) => {
     return true;
   };
 
+  /**
+   * メールアドレスの妥当性チェック
+   * @param {string} email - メールアドレス
+   * @returns {boolean} 妥当性結果
+   */
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
+  /**
+   * パスワードのハッシュ化
+   * @param {string} password - パスワード
+   * @returns {string} ハッシュ化されたパスワード
+   */
   const hashPassword = (password) => {
     return btoa(password + 'survey_monitor_salt');
   };
 
+  /**
+   * ユーザー一覧の取得
+   * @returns {Array} ユーザー配列
+   */
   const getUsers = () => {
     const users = localStorage.getItem('survey_monitor_users');
     return users ? JSON.parse(users) : [];
   };
 
+  /**
+   * ユーザー情報の更新
+   * @param {Object} user - 更新するユーザー情報
+   */
   const updateUser = (user) => {
     const users = getUsers();
     const index = users.findIndex(u => u.id === user.id);

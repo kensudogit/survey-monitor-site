@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
+/**
+ * レポート生成サービス
+ * 
+ * アンケート分析レポートの自動生成を行うサービスクラス
+ * PDF、Excel、CSV、JSON形式でのレポート生成とスケジュール機能を提供
+ */
 class ReportGenerationService
 {
     public function generateComprehensiveReport($surveyId, $format = 'pdf', $options = [])

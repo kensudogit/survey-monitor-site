@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ModernChart from './ModernChart';
 
+/**
+ * Domo.AI チャットアシスタントコンポーネント
+ * 
+ * AI アシスタントとの対話機能を提供するチャットインターフェース
+ * チャート表示、インサイト、推奨事項などの豊富なコンテンツをサポート
+ */
 const DomoAIChat = ({ onClose, dashboardData }) => {
+  // チャット状態管理
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -61,10 +68,17 @@ const DomoAIChat = ({ onClose, dashboardData }) => {
     scrollToBottom();
   }, [messages]);
 
+  /**
+   * メッセージエリアを最下部にスクロール
+   */
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  /**
+   * メッセージ送信処理
+   * ユーザーメッセージを追加し、AI応答をシミュレート
+   */
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
 
@@ -87,6 +101,12 @@ const DomoAIChat = ({ onClose, dashboardData }) => {
     }, 1500);
   };
 
+  /**
+   * AI応答生成
+   * ユーザー入力に基づいてランダムなAI応答を生成
+   * @param {string} userInput - ユーザーの入力メッセージ
+   * @returns {Object} AI応答オブジェクト
+   */
   const generateAIResponse = (userInput) => {
     const responses = [
       {
@@ -134,6 +154,11 @@ const DomoAIChat = ({ onClose, dashboardData }) => {
     };
   };
 
+  /**
+   * キーボードイベント処理
+   * Enterキーでメッセージ送信、Shift+Enterで改行
+   * @param {KeyboardEvent} e - キーボードイベント
+   */
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();

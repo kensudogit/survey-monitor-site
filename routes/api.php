@@ -4,10 +4,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SurveyAnalyticsController;
 use App\Http\Controllers\TestDataController;
+use App\Http\Controllers\SurveyController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+// Survey API Routes
+Route::prefix('surveys')->group(function () {
+    // 公開API（認証不要）
+    Route::get('/', [SurveyController::class, 'index']); // アンケート一覧
+    Route::get('/categories', [SurveyController::class, 'categories']); // カテゴリー一覧
+    Route::get('/{id}', [SurveyController::class, 'show']); // アンケート詳細
+    Route::get('/{id}/stats', [SurveyController::class, 'stats']); // アンケート統計
+    Route::get('/dashboard/stats', [SurveyController::class, 'dashboardStats']); // ダッシュボード統計
+    
+    // 認証が必要なAPI
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/{id}/response', [SurveyController::class, 'submitResponse']); // 回答送信
+        Route::get('/user/responses', [SurveyController::class, 'userResponses']); // ユーザーの回答履歴
+    });
+});
 
 // Test Data API Routes (for development and demonstration)
 Route::prefix('test-data')->group(function () {

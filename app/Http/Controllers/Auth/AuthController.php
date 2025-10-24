@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
+/**
+ * 認証コントローラー
+ * 
+ * ユーザーのログイン、登録、ログアウト処理を管理するコントローラー
+ * セッション管理、パスワードハッシュ化、バリデーション機能を実装
+ */
 class AuthController extends Controller
 {
     public function showLoginForm()

@@ -56,7 +56,12 @@ class AuthManager {
         }
     }
 
-    // ログイン
+    /**
+     * ユーザーログイン処理
+     * @param {string} email - メールアドレス
+     * @param {string} password - パスワード
+     * @returns {Object} ログイン結果
+     */
     async login(email, password) {
         try {
             const users = this.getUsers();
@@ -80,7 +85,9 @@ class AuthManager {
         }
     }
 
-    // ログアウト
+    /**
+     * ユーザーログアウト処理
+     */
     logout() {
         console.log('Logging out user:', this.currentUser?.name);
         this.currentUser = null;
@@ -93,7 +100,11 @@ class AuthManager {
         }, 100);
     }
 
-    // ユーザーデータバリデーション
+    /**
+     * ユーザーデータのバリデーション
+     * @param {Object} userData - ユーザーデータ
+     * @returns {boolean} バリデーション結果
+     */
     validateUserData(userData) {
         if (!userData.name || userData.name.length < 2) return false;
         if (!userData.email || !this.isValidEmail(userData.email)) return false;
@@ -102,24 +113,38 @@ class AuthManager {
         return true;
     }
 
-    // メールアドレス検証
+    /**
+     * メールアドレスの妥当性チェック
+     * @param {string} email - メールアドレス
+     * @returns {boolean} 妥当性結果
+     */
     isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    // パスワードハッシュ化（簡易版）
+    /**
+     * パスワードのハッシュ化（簡易版）
+     * @param {string} password - パスワード
+     * @returns {string} ハッシュ化されたパスワード
+     */
     hashPassword(password) {
         return btoa(password + 'survey_monitor_salt');
     }
 
-    // ユーザー一覧取得
+    /**
+     * ユーザー一覧の取得
+     * @returns {Array} ユーザー配列
+     */
     getUsers() {
         const users = localStorage.getItem('survey_monitor_users');
         return users ? JSON.parse(users) : [];
     }
 
-    // ユーザー情報更新
+    /**
+     * ユーザー情報の更新
+     * @param {Object} user - 更新するユーザー情報
+     */
     updateUser(user) {
         const users = this.getUsers();
         const index = users.findIndex(u => u.id === user.id);
@@ -129,7 +154,10 @@ class AuthManager {
         }
     }
 
-    // ポイント追加
+    /**
+     * ポイント追加処理
+     * @param {number} points - 追加するポイント数
+     */
     addPoints(points) {
         if (this.currentUser) {
             this.currentUser.points += points;
@@ -139,7 +167,10 @@ class AuthManager {
         }
     }
 
-    // アンケート完了記録
+    /**
+     * アンケート完了記録
+     * @param {string} surveyId - アンケートID
+     */
     completeSurvey(surveyId) {
         if (this.currentUser) {
             if (!this.currentUser.surveysCompleted.includes(surveyId)) {
@@ -150,7 +181,10 @@ class AuthManager {
         }
     }
 
-    // UI更新
+    /**
+     * UI更新処理
+     * 認証状態に応じてUI要素の表示を切り替える
+     */
     updateUI() {
         const loginLinks = document.querySelectorAll('.login-link');
         const userInfo = document.querySelectorAll('.user-info');
@@ -178,7 +212,10 @@ class AuthManager {
         }
     }
 
-    // デモユーザーでログイン
+    /**
+     * デモユーザーでログイン処理
+     * @returns {Object} ログイン結果
+     */
     loginDemo() {
         const demoUser = {
             id: 'demo_user',
@@ -211,7 +248,11 @@ class AuthManager {
         return { success: true, user: demoUser };
     }
 
-    // 認証チェック
+    /**
+     * 認証チェック処理
+     * 認証が必要なページでログイン状態を確認
+     * @returns {boolean} 認証状態
+     */
     requireAuth() {
         if (!this.currentUser) {
             alert('ログインが必要です');
@@ -221,7 +262,26 @@ class AuthManager {
         return true;
     }
 
-    // 認証状態の確認
+    /**
+     * 認証トークンの取得
+     * @returns {string|null} 認証トークン
+     */
+    getToken() {
+        return localStorage.getItem('auth_token');
+    }
+
+    /**
+     * 認証トークンの設定
+     * @param {string} token - 認証トークン
+     */
+    setToken(token) {
+        localStorage.setItem('auth_token', token);
+    }
+
+    /**
+     * 認証状態の確認
+     * @returns {boolean} 認証状態
+     */
     isAuthenticated() {
         return this.currentUser !== null;
     }

@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/**
+ * ホームコントローラー
+ * 
+ * サイトのトップページを表示するコントローラー
+ * おすすめアンケート、カテゴリ一覧、統計情報を提供
+ */
 class HomeController extends Controller
 {
     public function index()

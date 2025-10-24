@@ -7,6 +7,12 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
+/**
+ * イベントサービスプロバイダー
+ * 
+ * アプリケーションのイベント・リスナー機能を管理するプロバイダー
+ * イベントとリスナーのマッピング、イベント自動発見機能を設定
+ */
 class EventServiceProvider extends ServiceProvider
 {
     /**

@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
+/**
+ * クッキー同意バナーコンポーネント
+ * 
+ * GDPR準拠のクッキー同意管理を行うコンポーネント
+ * プライバシー保護を重視した分析機能とローカルストレージベースの認証を提供
+ */
 const CookieConsent = () => {
+  // バナー表示状態と同意状況の管理
   const [showBanner, setShowBanner] = useState(false);
   const [consentGiven, setConsentGiven] = useState(false);
 
@@ -14,6 +21,10 @@ const CookieConsent = () => {
     }
   }, []);
 
+  /**
+   * クッキー同意処理
+   * ユーザーが分析データ収集に同意した場合の処理
+   */
   const handleAccept = () => {
     localStorage.setItem('cookie-consent', 'accepted');
     setConsentGiven(true);
@@ -23,6 +34,10 @@ const CookieConsent = () => {
     enableAnalytics();
   };
 
+  /**
+   * クッキー拒否処理
+   * ユーザーが分析データ収集を拒否した場合の処理
+   */
   const handleDecline = () => {
     localStorage.setItem('cookie-consent', 'declined');
     setConsentGiven(false);
@@ -32,6 +47,10 @@ const CookieConsent = () => {
     disableAnalytics();
   };
 
+  /**
+   * 分析機能の有効化
+   * プライバシー保護を重視した分析機能を有効にする
+   */
   const enableAnalytics = () => {
     // Google Analytics 4 の代替手段
     if (typeof gtag !== 'undefined') {
@@ -58,6 +77,10 @@ const CookieConsent = () => {
     });
   };
 
+  /**
+   * 分析機能の無効化
+   * サードパーティ分析を無効にし、プライバシー重視の分析のみ使用
+   */
   const disableAnalytics = () => {
     // Google Analytics を無効化
     if (typeof gtag !== 'undefined') {
@@ -103,7 +126,12 @@ const CookieConsent = () => {
   );
 };
 
-// プライバシー重視の分析フック
+/**
+ * プライバシー重視の分析フック
+ * 
+ * サードパーティクッキーを使用せず、ローカルストレージベースで
+ * プライバシーを保護しながら分析データを収集するカスタムフック
+ */
 export const usePrivacyAnalytics = () => {
   const trackEvent = (eventName, parameters = {}) => {
     // ローカルストレージベースの分析
@@ -170,7 +198,12 @@ export const usePrivacyAnalytics = () => {
   return { trackEvent };
 };
 
-// ローカルストレージの代替手段
+/**
+ * ローカルストレージの代替手段フック
+ * 
+ * ローカルストレージが利用できない場合の代替手段を提供するカスタムフック
+ * エラーハンドリングとメモリベースの代替手段を含む
+ */
 export const useLocalStorage = (key, defaultValue) => {
   const [value, setValue] = useState(() => {
     try {
@@ -196,7 +229,12 @@ export const useLocalStorage = (key, defaultValue) => {
   return [value, setStoredValue];
 };
 
-// サードパーティクッキーなしの認証
+/**
+ * サードパーティクッキーなしの認証フック
+ * 
+ * クッキーを使用せずにローカルストレージベースで
+ * ユーザー認証を管理するカスタムフック
+ */
 export const useCookieFreeAuth = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);

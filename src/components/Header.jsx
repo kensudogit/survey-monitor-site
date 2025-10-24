@@ -3,11 +3,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 
+/**
+ * ヘッダーコンポーネント
+ * 
+ * サイトの最上部に表示されるナビゲーションヘッダー
+ * ロゴ、メニュー、認証状態、テーマ切り替え機能を提供
+ */
 const Header = () => {
+  // 認証状態とテーマ状態の管理
   const { currentUser, logout, isAuthenticated } = useAuth();
   const { theme, toggleTheme, isDark } = useTheme();
   const navigate = useNavigate();
 
+  /**
+   * ログアウト処理
+   * 認証状態をクリアし、ホームページにリダイレクト
+   */
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -17,6 +28,7 @@ const Header = () => {
     <header className="glass-card sticky top-0 z-50" role="banner">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
+          {/* ロゴセクション */}
           <div className="flex items-center">
             <Link 
               to="/" 
@@ -32,6 +44,7 @@ const Header = () => {
             </Link>
           </div>
           
+          {/* メインナビゲーションセクション */}
           <nav className="hidden md:flex space-x-6" role="navigation" aria-label="メインナビゲーション">
             <Link 
               to="/" 
@@ -49,6 +62,7 @@ const Header = () => {
               <i className="fas fa-list mr-2 group-hover:scale-110 transition-transform motion-safe" aria-hidden="true"></i>
               アンケート一覧
             </Link>
+            {/* 認証済みユーザーのみ表示されるメニュー */}
             {isAuthenticated && (
               <>
                 <Link 
@@ -59,28 +73,29 @@ const Header = () => {
                   <i className="fas fa-tachometer-alt mr-2 group-hover:scale-110 transition-transform motion-safe" aria-hidden="true"></i>
                   ダッシュボード
                 </Link>
-                    <Link 
-                      to="/analytics" 
-                      className="text-white hover:text-blue-200 font-medium transition-colors flex items-center group forced-colors-link motion-safe"
-                      aria-current={window.location.pathname === '/analytics' ? 'page' : undefined}
-                    >
-                      <i className="fas fa-brain mr-2 group-hover:scale-110 transition-transform motion-safe" aria-hidden="true"></i>
-                      AI分析
-                    </Link>
-                    <Link 
-                      to="/domo-ai" 
-                      className="text-white hover:text-blue-200 font-medium transition-colors flex items-center group forced-colors-link motion-safe"
-                      aria-current={window.location.pathname === '/domo-ai' ? 'page' : undefined}
-                    >
-                      <i className="fas fa-chart-line mr-2 group-hover:scale-110 transition-transform motion-safe" aria-hidden="true"></i>
-                      Domo.AI
-                    </Link>
+                <Link 
+                  to="/analytics" 
+                  className="text-white hover:text-blue-200 font-medium transition-colors flex items-center group forced-colors-link motion-safe"
+                  aria-current={window.location.pathname === '/analytics' ? 'page' : undefined}
+                >
+                  <i className="fas fa-brain mr-2 group-hover:scale-110 transition-transform motion-safe" aria-hidden="true"></i>
+                  AI分析
+                </Link>
+                <Link 
+                  to="/domo-ai" 
+                  className="text-white hover:text-blue-200 font-medium transition-colors flex items-center group forced-colors-link motion-safe"
+                  aria-current={window.location.pathname === '/domo-ai' ? 'page' : undefined}
+                >
+                  <i className="fas fa-chart-line mr-2 group-hover:scale-110 transition-transform motion-safe" aria-hidden="true"></i>
+                  Domo.AI
+                </Link>
               </>
             )}
           </nav>
           
+          {/* ユーザーアクションセクション */}
           <div className="flex items-center space-x-4">
-            {/* Theme Toggle */}
+            {/* テーマ切り替えボタン */}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-white bg-opacity-10 hover:bg-opacity-20 transition-colors text-white forced-colors-button motion-safe"
@@ -90,8 +105,10 @@ const Header = () => {
               <i className={`fas ${isDark ? 'fa-sun' : 'fa-moon'}`} aria-hidden="true"></i>
             </button>
             
+            {/* 認証状態に応じた表示切り替え */}
             {isAuthenticated ? (
               <>
+                {/* ユーザー情報表示 */}
                 <div className="flex items-center space-x-3 bg-white bg-opacity-10 rounded-lg px-4 py-2">
                   <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                     <i className="fas fa-user text-white text-sm" aria-hidden="true"></i>
@@ -101,6 +118,7 @@ const Header = () => {
                     <div className="text-xs text-blue-200">{currentUser.points}pt</div>
                   </div>
                 </div>
+                {/* ログアウトボタン */}
                 <button
                   onClick={handleLogout}
                   className="btn-secondary text-red-600 hover:text-red-700 hover:bg-red-50 forced-colors-button motion-safe"
@@ -112,6 +130,7 @@ const Header = () => {
               </>
             ) : (
               <>
+                {/* ログインボタン */}
                 <Link 
                   to="/login" 
                   className="text-white hover:text-blue-200 font-medium transition-colors flex items-center forced-colors-link motion-safe"
@@ -119,6 +138,7 @@ const Header = () => {
                   <i className="fas fa-sign-in-alt mr-2" aria-hidden="true"></i>
                   ログイン
                 </Link>
+                {/* 新規登録ボタン */}
                 <Link 
                   to="/register" 
                   className="btn-primary flex items-center forced-colors-button motion-safe"

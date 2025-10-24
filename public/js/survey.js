@@ -1,18 +1,68 @@
 // アンケート管理システム
 class SurveyManager {
     constructor() {
-        this.surveys = this.getSurveys();
+        this.surveys = [];
+        this.categories = [];
         this.init();
     }
 
-    init() {
-        // デモデータがなければ作成
-        if (this.surveys.length === 0) {
+    /**
+     * 初期化処理
+     * APIからデータを取得して初期化
+     */
+    async init() {
+        try {
+            await this.loadSurveys();
+            await this.loadCategories();
+        } catch (error) {
+            console.error('SurveyManager initialization failed:', error);
+            // フォールバック: デモデータを使用
             this.createDemoSurveys();
         }
     }
 
-    // デモアンケートデータ作成
+    /**
+     * APIからアンケート一覧を取得
+     */
+    async loadSurveys() {
+        try {
+            const response = await fetch('/api/surveys.json');
+            const data = await response.json();
+            
+            if (data.success) {
+                this.surveys = data.data;
+            } else {
+                throw new Error('Failed to load surveys from API');
+            }
+        } catch (error) {
+            console.error('Failed to load surveys:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * APIからカテゴリー一覧を取得
+     */
+    async loadCategories() {
+        try {
+            const response = await fetch('/api/surveys-categories.json');
+            const data = await response.json();
+            
+            if (data.success) {
+                this.categories = data.data;
+            } else {
+                throw new Error('Failed to load categories from API');
+            }
+        } catch (error) {
+            console.error('Failed to load categories:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * デモアンケートデータの作成
+     * 初期データとしてサンプルアンケートを作成
+     */
     createDemoSurveys() {
         const demoSurveys = [
             {
@@ -236,19 +286,99 @@ class SurveyManager {
         this.surveys = demoSurveys;
     }
 
-    // アンケート一覧取得
-    getSurveys() {
-        const surveys = localStorage.getItem('survey_monitor_surveys');
-        return surveys ? JSON.parse(surveys) : [];
+    /**
+     * アンケート一覧の取得
+     * APIからアンケートデータを取得
+     * @returns {Array} アンケート配列
+     */
+    async getSurveys() {
+        try {
+            const response = await fetch('/api/surveys.json');
+            const data = await response.json();
+            
+            if (data.success) {
+                return data.data;
+            } else {
+                throw new Error('Failed to fetch surveys');
+            }
+        } catch (error) {
+            console.error('Failed to fetch surveys:', error);
+            // フォールバック: ローカルストレージから取得
+            const surveys = localStorage.getItem('survey_monitor_surveys');
+            return surveys ? JSON.parse(surveys) : [];
+        }
     }
 
-    // アンケート詳細取得
-    getSurvey(id) {
-        return this.surveys.find(survey => survey.id === id);
+    /**
+     * アンケート詳細の取得
+     * APIからアンケート詳細を取得
+     * @param {string} id - アンケートID
+     * @returns {Object|null} アンケート詳細
+     */
+    async getSurvey(id) {
+        try {
+            const response = await fetch('/api/surveys.json');
+            const data = await response.json();
+            
+            if (data.success) {
+                return data.data.find(survey => survey.id == id);
+            } else {
+                throw new Error('Failed to fetch survey');
+            }
+        } catch (error) {
+            console.error('Failed to fetch survey:', error);
+            // フォールバック: ローカルストレージから取得
+            return this.surveys.find(survey => survey.id === id);
+        }
     }
 
-    // アンケート回答保存
-    saveResponse(surveyId, responses) {
+    /**
+     * アンケート回答の保存
+     * APIに回答データを送信
+     * @param {string} surveyId - アンケートID
+     * @param {Object} responses - 回答データ
+     * @returns {Object} 保存された回答データ
+     */
+    async saveResponse(surveyId, responses) {
+        try {
+            const response = await fetch(`/api/surveys/${surveyId}/response`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${window.authManager.getToken()}`
+                },
+                body: JSON.stringify({
+                    responses: responses,
+                    completion_time: Date.now() - this.startTime // 仮の完了時間
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // ユーザーのポイント追加
+                const survey = await this.getSurvey(surveyId);
+                if (survey) {
+                    window.authManager.addPoints(survey.points);
+                }
+                return data.data;
+            } else {
+                throw new Error(data.message || 'Failed to save response');
+            }
+        } catch (error) {
+            console.error('Failed to save response:', error);
+            // フォールバック: ローカルストレージに保存
+            return this.saveResponseLocally(surveyId, responses);
+        }
+    }
+
+    /**
+     * ローカルストレージに回答を保存（フォールバック用）
+     * @param {string} surveyId - アンケートID
+     * @param {Object} responses - 回答データ
+     * @returns {Object} 保存された回答データ
+     */
+    saveResponseLocally(surveyId, responses) {
         const responseData = {
             id: Date.now().toString(),
             surveyId: surveyId,
@@ -271,19 +401,30 @@ class SurveyManager {
         return responseData;
     }
 
-    // 回答データ取得
+    /**
+     * 回答データの取得
+     * @returns {Array} 回答データ配列
+     */
     getResponses() {
         const responses = localStorage.getItem('survey_monitor_responses');
         return responses ? JSON.parse(responses) : [];
     }
 
-    // ユーザーの回答済みアンケート取得
+    /**
+     * ユーザーの回答済みアンケート取得
+     * @param {string} userId - ユーザーID
+     * @returns {Array} 回答済みアンケート配列
+     */
     getUserCompletedSurveys(userId) {
         const responses = this.getResponses();
         return responses.filter(response => response.userId === userId);
     }
 
-    // アンケート統計取得
+    /**
+     * アンケート統計の取得
+     * @param {string} surveyId - アンケートID
+     * @returns {Object} 統計データ
+     */
     getSurveyStats(surveyId) {
         const responses = this.getResponses();
         const surveyResponses = responses.filter(response => response.surveyId === surveyId);
@@ -295,19 +436,90 @@ class SurveyManager {
         };
     }
 
-    // カテゴリー別アンケート取得
-    getSurveysByCategory(category) {
-        return this.surveys.filter(survey => survey.category === category);
+    /**
+     * カテゴリー別アンケート取得
+     * APIからカテゴリー別のアンケートを取得
+     * @param {string} category - カテゴリー名
+     * @returns {Array} カテゴリー別アンケート配列
+     */
+    async getSurveysByCategory(category) {
+        try {
+            const response = await fetch('/api/surveys.json');
+            const data = await response.json();
+            
+            if (data.success) {
+                return data.data.filter(survey => survey.category === category);
+            } else {
+                throw new Error('Failed to fetch surveys by category');
+            }
+        } catch (error) {
+            console.error('Failed to fetch surveys by category:', error);
+            // フォールバック: ローカルストレージから取得
+            const surveys = this.getSurveys();
+            return surveys.filter(survey => survey.category === category);
+        }
     }
 
-    // 利用可能なアンケート取得（未回答のもの）
-    getAvailableSurveys(userId) {
-        const completedSurveys = this.getUserCompletedSurveys(userId);
-        const completedIds = completedSurveys.map(response => response.surveyId);
-        
-        return this.surveys.filter(survey => 
-            survey.status === 'active' && !completedIds.includes(survey.id)
-        );
+    /**
+     * 利用可能なアンケート取得（未回答のもの）
+     * APIから利用可能なアンケートを取得
+     * @param {string} userId - ユーザーID
+     * @returns {Array} 利用可能なアンケート配列
+     */
+    async getAvailableSurveys(userId) {
+        try {
+            const response = await fetch('/api/surveys.json');
+            const data = await response.json();
+            
+            if (data.success) {
+                // ユーザーの回答済みアンケートを取得
+                const userResponses = await this.getUserResponses();
+                const completedIds = userResponses.map(response => response.survey_id);
+                
+                // 未回答のアンケートのみを返す
+                return data.data.filter(survey => 
+                    survey.status === 'active' && !completedIds.includes(survey.id)
+                );
+            } else {
+                throw new Error('Failed to fetch available surveys');
+            }
+        } catch (error) {
+            console.error('Failed to fetch available surveys:', error);
+            // フォールバック: ローカルストレージから取得
+            const completedSurveys = this.getUserCompletedSurveys(userId);
+            const completedIds = completedSurveys.map(response => response.surveyId);
+            
+            return this.surveys.filter(survey => 
+                survey.status === 'active' && !completedIds.includes(survey.id)
+            );
+        }
+    }
+
+    /**
+     * ユーザーの回答データをAPIから取得
+     * @returns {Array} ユーザーの回答データ配列
+     */
+    async getUserResponses() {
+        try {
+            const response = await fetch('/api/surveys/user/responses', {
+                headers: {
+                    'Authorization': `Bearer ${window.authManager.getToken()}`
+                }
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                return data.data;
+            } else {
+                throw new Error('Failed to fetch user responses');
+            }
+        } catch (error) {
+            console.error('Failed to fetch user responses:', error);
+            // フォールバック: ローカルストレージから取得
+            return this.getResponses().filter(response => 
+                response.userId === window.authManager.currentUser?.id
+            );
+        }
     }
 }
 
