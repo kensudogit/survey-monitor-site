@@ -20,23 +20,56 @@ class SurveyAnalyticsService
 {
     public function generateSurveyAnalytics($surveyId)
     {
+        \Log::info("Starting analytics generation for survey ID: {$surveyId}");
+        
         $survey = Survey::with(['responses', 'questions', 'responses.user'])->findOrFail($surveyId);
+        \Log::info("Found survey: {$survey->title} with {$survey->responses->count()} responses");
+        
+        \Log::info("Calculating completion rate...");
+        $completionRate = $this->calculateCompletionRate($survey);
+        \Log::info("Completion rate: {$completionRate}%");
+        
+        \Log::info("Calculating average completion time...");
+        $averageCompletionTime = $this->calculateAverageCompletionTime($survey);
+        \Log::info("Average completion time: {$averageCompletionTime} minutes");
+        
+        \Log::info("Calculating response quality score...");
+        $responseQualityScore = $this->calculateResponseQualityScore($survey);
+        \Log::info("Response quality score: {$responseQualityScore}");
+        
+        \Log::info("Generating demographic breakdown...");
+        $demographicBreakdown = $this->getDemographicBreakdown($survey);
+        
+        \Log::info("Generating question analytics...");
+        $questionAnalytics = $this->getQuestionAnalytics($survey);
+        \Log::info("Processed " . count($questionAnalytics) . " questions");
+        
+        \Log::info("Performing sentiment analysis...");
+        $sentimentAnalysis = $this->performSentimentAnalysis($survey);
+        \Log::info("Sentiment analysis completed: {$sentimentAnalysis['positive']} positive, {$sentimentAnalysis['negative']} negative, {$sentimentAnalysis['neutral']} neutral");
+        
+        \Log::info("Generating trend data...");
+        $trendData = $this->getTrendData($survey);
         
         $analytics = [
             'total_responses' => $survey->responses->count(),
-            'completion_rate' => $this->calculateCompletionRate($survey),
-            'average_completion_time' => $this->calculateAverageCompletionTime($survey),
-            'response_quality_score' => $this->calculateResponseQualityScore($survey),
-            'demographic_breakdown' => $this->getDemographicBreakdown($survey),
-            'question_analytics' => $this->getQuestionAnalytics($survey),
-            'sentiment_analysis' => $this->performSentimentAnalysis($survey),
-            'trend_data' => $this->getTrendData($survey),
+            'completion_rate' => $completionRate,
+            'average_completion_time' => $averageCompletionTime,
+            'response_quality_score' => $responseQualityScore,
+            'demographic_breakdown' => $demographicBreakdown,
+            'question_analytics' => $questionAnalytics,
+            'sentiment_analysis' => $sentimentAnalysis,
+            'trend_data' => $trendData,
         ];
 
-        return SurveyAnalytics::updateOrCreate(
+        \Log::info("Saving analytics data to database...");
+        $result = SurveyAnalytics::updateOrCreate(
             ['survey_id' => $surveyId],
             array_merge($analytics, ['generated_at' => now()])
         );
+        
+        \Log::info("Analytics generation completed for survey ID: {$surveyId}");
+        return $result;
     }
 
     private function calculateCompletionRate($survey)
@@ -173,8 +206,9 @@ class SurveyAnalyticsService
             ];
 
             if (in_array($question->question_type, ['radio', 'select', 'checkbox', 'rating'])) {
-                $analytics['answer_distribution'] = $responses->pluck('answer')->countBy();
-                $analytics['most_common_answer'] = $responses->pluck('answer')->mode()->first();
+                $answerDistribution = $responses->pluck('answer')->countBy();
+                $analytics['answer_distribution'] = $answerDistribution;
+                $analytics['most_common_answer'] = $answerDistribution->sortDesc()->keys()->first();
             }
 
             if ($question->question_type === 'rating') {
@@ -235,16 +269,29 @@ class SurveyAnalyticsService
             ->orderBy('date')
             ->get();
 
+        $dailyResponses = $responses->pluck('count', 'date');
+        
+        // Calculate cumulative sum manually
+        $totalResponsesOverTime = [];
+        $cumulativeSum = 0;
+        foreach ($dailyResponses as $date => $count) {
+            $cumulativeSum += $count;
+            $totalResponsesOverTime[$date] = $cumulativeSum;
+        }
+
         return [
-            'daily_responses' => $responses->pluck('count', 'date'),
-            'total_responses_over_time' => $responses->cumsum('count'),
+            'daily_responses' => $dailyResponses,
+            'total_responses_over_time' => $totalResponsesOverTime,
         ];
     }
 
     public function generateInsights($surveyId)
     {
+        \Log::info("Starting insights generation for survey ID: {$surveyId}");
+        
         $analytics = SurveyAnalytics::where('survey_id', $surveyId)->first();
         if (!$analytics) {
+            \Log::info("No analytics found, generating analytics first...");
             $analytics = $this->generateSurveyAnalytics($surveyId);
         }
 
@@ -252,6 +299,7 @@ class SurveyAnalyticsService
 
         // Completion rate insight
         if ($analytics->completion_rate < 70) {
+            \Log::info("Generating completion rate insight (rate: {$analytics->completion_rate}%)");
             $insights[] = [
                 'survey_id' => $surveyId,
                 'insight_type' => 'completion_rate',
@@ -270,6 +318,7 @@ class SurveyAnalyticsService
 
         // Response quality insight
         if ($analytics->response_quality_score < 60) {
+            \Log::info("Generating response quality insight (score: {$analytics->response_quality_score})");
             $insights[] = [
                 'survey_id' => $surveyId,
                 'insight_type' => 'response_quality',
@@ -293,6 +342,7 @@ class SurveyAnalyticsService
             foreach ($demographics['gender'] as $gender => $count) {
                 $percentage = ($count / $totalGender) * 100;
                 if ($percentage > 70) {
+                    \Log::info("Generating demographic bias insight (gender: {$gender}, percentage: {$percentage}%)");
                     $insights[] = [
                         'survey_id' => $surveyId,
                         'insight_type' => 'demographic_bias',
@@ -313,10 +363,12 @@ class SurveyAnalyticsService
         }
 
         // Save insights
+        \Log::info("Saving " . count($insights) . " insights to database...");
         foreach ($insights as $insight) {
             SurveyInsight::create($insight);
         }
 
+        \Log::info("Insights generation completed for survey ID: {$surveyId}");
         return $insights;
     }
 

@@ -23,9 +23,8 @@ class SurveyResponse extends Model
     protected $fillable = [
         'survey_id',
         'user_id',
-        'responses',
-        'completion_time',
-        'completed_at',
+        'question_id',
+        'answer',
     ];
 
     /**
@@ -57,6 +56,16 @@ class SurveyResponse extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * 質問とのリレーション
+     * 
+     * @return BelongsTo
+     */
+    public function question(): BelongsTo
+    {
+        return $this->belongsTo(SurveyQuestion::class);
     }
 
     /**

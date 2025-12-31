@@ -24,12 +24,17 @@ class Survey extends Model
     protected $fillable = [
         'title',
         'description',
-        'category',
+        'category_id',
         'points',
-        'estimated_time',
-        'image_url',
-        'questions',
+        'duration_minutes',
+        'max_responses',
+        'current_responses',
         'status',
+        'start_date',
+        'end_date',
+        'image_url',
+        'is_featured',
+        'created_by',
     ];
 
     /**
@@ -38,10 +43,24 @@ class Survey extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'questions' => 'array',
         'points' => 'integer',
-        'estimated_time' => 'integer',
+        'duration_minutes' => 'integer',
+        'max_responses' => 'integer',
+        'current_responses' => 'integer',
+        'is_featured' => 'boolean',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
     ];
+
+    /**
+     * アンケート質問とのリレーション
+     * 
+     * @return HasMany
+     */
+    public function questions(): HasMany
+    {
+        return $this->hasMany(SurveyQuestion::class);
+    }
 
     /**
      * アンケート回答とのリレーション
@@ -60,7 +79,7 @@ class Survey extends Model
      */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(SurveyCategory::class, 'category', 'name');
+        return $this->belongsTo(SurveyCategory::class, 'category_id');
     }
 
     /**
@@ -78,12 +97,12 @@ class Survey extends Model
      * カテゴリー別でアンケートを取得するスコープ
      * 
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $category
+     * @param int $categoryId
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeByCategory($query, string $category)
+    public function scopeByCategory($query, int $categoryId)
     {
-        return $query->where('category', $category);
+        return $query->where('category_id', $categoryId);
     }
 
     /**

@@ -38,7 +38,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('survey_categories')->onDelete('cascade');
             $table->integer('points')->default(0);
             $table->integer('duration_minutes')->default(5);
             $table->integer('max_responses')->nullable();
@@ -67,7 +67,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('survey_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('question_id')->constrained()->onDelete('cascade');
+            $table->foreignId('question_id')->constrained('survey_questions')->onDelete('cascade');
             $table->text('answer')->nullable();
             $table->timestamps();
         });

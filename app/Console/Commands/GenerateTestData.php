@@ -41,10 +41,13 @@ class GenerateTestData extends Command
     public function handle()
     {
         $this->info('🚀 Starting comprehensive test data generation...');
+        \Log::info('Starting comprehensive test data generation');
         
         $surveysCount = $this->option('surveys');
         $usersCount = $this->option('users');
         $responsesCount = $this->option('responses');
+        
+        \Log::info("Test data parameters - Surveys: {$surveysCount}, Users: {$usersCount}, Responses: {$responsesCount}");
 
         // 既存データをクリア
         $this->clearExistingData();
@@ -56,25 +59,44 @@ class GenerateTestData extends Command
         $this->generateResponses($surveys, $responsesCount);
         
         // AI分析データ生成
+        \Log::info('Starting AI analytics data generation...');
         $this->generateAnalyticsData($surveys);
+        \Log::info('Starting AI insights data generation...');
         $this->generateInsightsData($surveys);
 
         $this->info('✅ Test data generation completed successfully!');
+        \Log::info('Test data generation completed successfully');
         $this->displaySummary();
     }
 
     private function clearExistingData()
     {
         $this->info('🧹 Clearing existing test data...');
+        \Log::info('Clearing existing test data...');
         
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        SurveyInsight::truncate();
-        SurveyAnalytics::truncate();
-        SurveyResponse::truncate();
-        SurveyQuestion::truncate();
-        Survey::truncate();
-        User::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        // Disable foreign key constraints for SQLite
+        if (DB::getDriverName() === 'sqlite') {
+            \Log::info('Disabling foreign key constraints for SQLite');
+            DB::statement('PRAGMA foreign_keys = OFF;');
+        }
+        
+        // Use delete instead of truncate for better SQLite compatibility
+        \Log::info('Deleting existing data from all tables...');
+        SurveyInsight::query()->delete();
+        SurveyAnalytics::query()->delete();
+        SurveyResponse::query()->delete();
+        SurveyQuestion::query()->delete();
+        Survey::query()->delete();
+        User::query()->delete();
+        
+        // Reset auto-increment for SQLite
+        if (DB::getDriverName() === 'sqlite') {
+            \Log::info('Resetting auto-increment sequences for SQLite');
+            DB::statement('DELETE FROM sqlite_sequence');
+            DB::statement('PRAGMA foreign_keys = ON;');
+        }
+        
+        \Log::info('Data clearing completed');
     }
 
     private function generateCategories()
@@ -421,6 +443,16 @@ class GenerateTestData extends Command
                 '字幕の精度が悪いです。',
                 'ダウンロード機能が便利です。',
                 '検索機能が使いにくいです。'
+            ],
+            'その他' => [
+                '全体的に満足しています。',
+                '改善の余地があると思います。',
+                '特に問題はありません。',
+                'もう少し工夫が必要です。',
+                '期待通りでした。',
+                '予想以上でした。',
+                '普通だと思います。',
+                '良い点が多いです。'
             ]
         ];
 
@@ -471,10 +503,15 @@ class GenerateTestData extends Command
     private function generateAnalyticsData($surveys)
     {
         $this->info('📊 Generating analytics data...');
+        \Log::info('Starting analytics data generation for ' . count($surveys) . ' surveys');
         
         foreach ($surveys as $survey) {
+            \Log::info("Processing analytics for survey: {$survey->title} (ID: {$survey->id})");
+            
             $responses = $survey->responses;
             $users = User::whereIn('id', $responses->pluck('user_id'))->get();
+            
+            \Log::info("Found {$responses->count()} responses and {$users->count()} users for survey {$survey->id}");
             
             // 完了率計算
             $totalQuestions = $survey->questions->count();
@@ -482,8 +519,10 @@ class GenerateTestData extends Command
                 ->filter(function($userResponses) use ($totalQuestions) {
                     return $userResponses->count() >= $totalQuestions;
                 })->count();
-            $totalUsers = $responses->distinct('user_id')->count();
+            $totalUsers = $responses->unique('user_id')->count();
             $completionRate = $totalUsers > 0 ? ($completedUsers / $totalUsers) * 100 : 0;
+            
+            \Log::info("Completion rate calculation - Total questions: {$totalQuestions}, Completed users: {$completedUsers}, Total users: {$totalUsers}, Rate: {$completionRate}%");
 
             // 平均完了時間
             $completionTimes = $responses->groupBy('user_id')
@@ -493,9 +532,12 @@ class GenerateTestData extends Command
                     return $endTime->diffInMinutes($startTime);
                 });
             $averageCompletionTime = $completionTimes->avg() ?? 0;
+            
+            \Log::info("Average completion time: {$averageCompletionTime} minutes");
 
             // 品質スコア計算
             $qualityScore = $this->calculateQualityScore($survey);
+            \Log::info("Quality score: {$qualityScore}");
 
             // デモグラフィック分析
             $demographicBreakdown = [
@@ -503,6 +545,8 @@ class GenerateTestData extends Command
                 'age_groups' => $this->getAgeGroups($users),
                 'registration_period' => $this->getRegistrationPeriods($users)
             ];
+            
+            \Log::info("Demographic breakdown generated - Gender distribution: " . json_encode($demographicBreakdown['gender']));
 
             // 質問分析
             $questionAnalytics = [];
@@ -543,19 +587,32 @@ class GenerateTestData extends Command
 
                 $questionAnalytics[] = $analytics;
             }
+            
+            \Log::info("Question analytics generated for " . count($questionAnalytics) . " questions");
 
             // 感情分析
             $sentimentAnalysis = $this->performSentimentAnalysis($survey);
+            \Log::info("Sentiment analysis completed - Positive: {$sentimentAnalysis['positive']}, Negative: {$sentimentAnalysis['negative']}, Neutral: {$sentimentAnalysis['neutral']}");
 
             // トレンドデータ
+            $dailyResponses = $responses->groupBy(function($response) {
+                return $response->created_at->format('Y-m-d');
+            })->map->count()->toArray();
+            
+            // 累積合計を計算
+            $totalResponsesOverTime = [];
+            $cumulativeSum = 0;
+            foreach ($dailyResponses as $date => $count) {
+                $cumulativeSum += $count;
+                $totalResponsesOverTime[$date] = $cumulativeSum;
+            }
+            
             $trendData = [
-                'daily_responses' => $responses->groupBy(function($response) {
-                    return $response->created_at->format('Y-m-d');
-                })->map->count()->toArray(),
-                'total_responses_over_time' => $responses->groupBy(function($response) {
-                    return $response->created_at->format('Y-m-d');
-                })->map->count()->cumsum()->toArray()
+                'daily_responses' => $dailyResponses,
+                'total_responses_over_time' => $totalResponsesOverTime
             ];
+            
+            \Log::info("Trend data generated for " . count($dailyResponses) . " days");
 
             SurveyAnalytics::create([
                 'survey_id' => $survey->id,
@@ -569,16 +626,26 @@ class GenerateTestData extends Command
                 'trend_data' => $trendData,
                 'generated_at' => Carbon::now()
             ]);
+            
+            \Log::info("Analytics data saved for survey {$survey->id}");
         }
+        
+        \Log::info('Analytics data generation completed');
     }
 
     private function generateInsightsData($surveys)
     {
         $this->info('🤖 Generating AI insights...');
+        \Log::info('Starting AI insights generation for ' . count($surveys) . ' surveys');
         
         foreach ($surveys as $survey) {
+            \Log::info("Processing insights for survey: {$survey->title} (ID: {$survey->id})");
+            
             $analytics = SurveyAnalytics::where('survey_id', $survey->id)->first();
-            if (!$analytics) continue;
+            if (!$analytics) {
+                \Log::warning("No analytics found for survey {$survey->id}, skipping insights generation");
+                continue;
+            }
 
             $insights = [];
 
@@ -673,10 +740,14 @@ class GenerateTestData extends Command
             }
 
             // インサイトを保存
+            \Log::info("Saving " . count($insights) . " insights for survey {$survey->id}");
             foreach ($insights as $insight) {
                 SurveyInsight::create($insight);
             }
+            \Log::info("Insights generation completed for survey {$survey->id}");
         }
+        
+        \Log::info('AI insights generation completed');
     }
 
     private function calculateQualityScore($survey)
